@@ -429,8 +429,7 @@
           "images": [
             "ipad-pro-finish-select-202405-13inch-spaceblack.jpg",
             "ipad-pro-finish-select-202405-13inch-spaceblack_AV1.jpg",
-            "ipad-pro-finish-select-202405-13inch-spaceblack_AV2.jpg",
-            "ipad-pro-finish-select-202405-11inch-spaceblack.jpg"
+            "ipad-pro-finish-select-202405-13inch-spaceblack_AV2.jpg"
           ]
         },
         {
@@ -440,8 +439,7 @@
           "images": [
             "ipad-pro-finish-select-202405-13inch-silver.jpg",
             "ipad-pro-finish-select-202405-13inch-silver_AV1.jpg",
-            "ipad-pro-finish-select-202405-13inch-silver_AV2.jpg",
-            "ipad-pro-finish-select-202405-11inch-silver.jpg"
+            "ipad-pro-finish-select-202405-13inch-silver_AV2.jpg"
           ]
         }
       ]
@@ -469,8 +467,7 @@
           "images": [
             "ipad-pro-finish-select-202405-13inch-spaceblack.jpg",
             "ipad-pro-finish-select-202405-13inch-spaceblack_AV1.jpg",
-            "ipad-pro-finish-select-202405-13inch-spaceblack_AV2.jpg",
-            "ipad-pro-finish-select-202405-11inch-spaceblack.jpg"
+            "ipad-pro-finish-select-202405-13inch-spaceblack_AV2.jpg"
           ]
         },
         {
@@ -480,8 +477,7 @@
           "images": [
             "ipad-pro-finish-select-202405-13inch-silver.jpg",
             "ipad-pro-finish-select-202405-13inch-silver_AV1.jpg",
-            "ipad-pro-finish-select-202405-13inch-silver_AV2.jpg",
-            "ipad-pro-finish-select-202405-11inch-silver.jpg"
+            "ipad-pro-finish-select-202405-13inch-silver_AV2.jpg"
           ]
         }
       ]
@@ -566,10 +562,9 @@
           "hex": "#bdd2df",
           "images": [
             "mba13-skyblue-select-202503.jpg",
-            "mba15-skyblue-select-202503.jpg",
-            "mba13-skyblue-cto-hero-202503.jpg",
-            "macbook-air-size-unselect-202601-gallery-1.jpg",
-            "macbook-air-size-unselect-202601-gallery-2.jpg"
+            "macbook-air-size-unselect-202601-gallery-2.jpg",
+            "macbook-air-size-unselect-202601-gallery-3.jpg",
+            "macbook-air-size-unselect-202603-gallery-3.jpg"
           ]
         },
         {
@@ -578,10 +573,9 @@
           "hex": "#e2e3e4",
           "images": [
             "mba13-silver-select-202503.jpg",
-            "mba15-silver-select-202503.jpg",
-            "mba13-silver-cto-hero-202503.jpg",
-            "macbook-air-size-unselect-202601-gallery-1.jpg",
-            "macbook-air-size-unselect-202601-gallery-2.jpg"
+            "macbook-air-size-unselect-202601-gallery-2.jpg",
+            "macbook-air-size-unselect-202601-gallery-3.jpg",
+            "macbook-air-size-unselect-202603-gallery-3.jpg"
           ]
         },
         {
@@ -590,10 +584,9 @@
           "hex": "#e7dfd0",
           "images": [
             "mba13-starlight-select-202503.jpg",
-            "mba15-starlight-select-202503.jpg",
-            "mba13-starlight-cto-hero-202503.jpg",
-            "macbook-air-size-unselect-202601-gallery-1.jpg",
-            "macbook-air-size-unselect-202601-gallery-2.jpg"
+            "macbook-air-size-unselect-202601-gallery-2.jpg",
+            "macbook-air-size-unselect-202601-gallery-3.jpg",
+            "macbook-air-size-unselect-202603-gallery-3.jpg"
           ]
         },
         {
@@ -602,10 +595,9 @@
           "hex": "#2d3541",
           "images": [
             "mba13-midnight-select-202503.jpg",
-            "mba15-midnight-select-202503.jpg",
-            "mba13-midnight-cto-hero-202503.jpg",
-            "macbook-air-size-unselect-202601-gallery-1.jpg",
-            "macbook-air-size-unselect-202601-gallery-2.jpg"
+            "macbook-air-size-unselect-202601-gallery-2.jpg",
+            "macbook-air-size-unselect-202601-gallery-3.jpg",
+            "macbook-air-size-unselect-202603-gallery-3.jpg"
           ]
         }
       ]
@@ -628,10 +620,11 @@
           "name": "Чёрный космос",
           "hex": "#2d2d2f",
           "images": [
-            "mbp14-spaceblack-select-202410.jpg",
-            "mbp16-spaceblack-select-202410.jpg",
             "mbp14-spaceblack-gallery1-202410.jpg",
-            "mac-macbook-pro-size-unselect-202610-gallery-1.jpg"
+            "mbp14-spaceblack-gallery2-202410.jpg",
+            "mbp14-spaceblack-gallery3-202410.jpg",
+            "mbp14-spaceblack-gallery4-202410.jpg",
+            "mbp14-spaceblack-gallery5-202410.jpg"
           ]
         },
         {
@@ -639,10 +632,11 @@
           "name": "Серебристый",
           "hex": "#e2e3e4",
           "images": [
-            "mbp14-silver-select-202410.jpg",
-            "mbp16-silver-select-202410.jpg",
             "mbp14-silver-gallery1-202410.jpg",
-            "mac-macbook-pro-size-unselect-202610-gallery-1.jpg"
+            "mbp14-silver-gallery2-202410.jpg",
+            "mbp14-silver-gallery3-202410.jpg",
+            "mbp14-silver-gallery4-202410.jpg",
+            "mbp14-silver-gallery5-202410.jpg"
           ]
         }
       ]
@@ -667,10 +661,11 @@
           "name": "Чёрный космос",
           "hex": "#2d2d2f",
           "images": [
-            "mbp14-spaceblack-select-202410.jpg",
-            "mbp16-spaceblack-select-202410.jpg",
             "mbp14-spaceblack-gallery1-202410.jpg",
-            "mac-macbook-pro-size-unselect-202610-gallery-1.jpg"
+            "mbp14-spaceblack-gallery2-202410.jpg",
+            "mbp14-spaceblack-gallery3-202410.jpg",
+            "mbp14-spaceblack-gallery4-202410.jpg",
+            "mbp14-spaceblack-gallery5-202410.jpg"
           ]
         },
         {
@@ -678,10 +673,11 @@
           "name": "Серебристый",
           "hex": "#e2e3e4",
           "images": [
-            "mbp14-silver-select-202410.jpg",
-            "mbp16-silver-select-202410.jpg",
             "mbp14-silver-gallery1-202410.jpg",
-            "mac-macbook-pro-size-unselect-202610-gallery-1.jpg"
+            "mbp14-silver-gallery2-202410.jpg",
+            "mbp14-silver-gallery3-202410.jpg",
+            "mbp14-silver-gallery4-202410.jpg",
+            "mbp14-silver-gallery5-202410.jpg"
           ]
         }
       ]
@@ -707,10 +703,11 @@
           "name": "Чёрный космос",
           "hex": "#2d2d2f",
           "images": [
-            "mbp14-spaceblack-select-202410.jpg",
-            "mbp16-spaceblack-select-202410.jpg",
             "mbp14-spaceblack-gallery1-202410.jpg",
-            "mac-macbook-pro-size-unselect-202610-gallery-1.jpg"
+            "mbp14-spaceblack-gallery2-202410.jpg",
+            "mbp14-spaceblack-gallery3-202410.jpg",
+            "mbp14-spaceblack-gallery4-202410.jpg",
+            "mbp14-spaceblack-gallery5-202410.jpg"
           ]
         },
         {
@@ -718,10 +715,11 @@
           "name": "Серебристый",
           "hex": "#e2e3e4",
           "images": [
-            "mbp14-silver-select-202410.jpg",
-            "mbp16-silver-select-202410.jpg",
             "mbp14-silver-gallery1-202410.jpg",
-            "mac-macbook-pro-size-unselect-202610-gallery-1.jpg"
+            "mbp14-silver-gallery2-202410.jpg",
+            "mbp14-silver-gallery3-202410.jpg",
+            "mbp14-silver-gallery4-202410.jpg",
+            "mbp14-silver-gallery5-202410.jpg"
           ]
         }
       ]

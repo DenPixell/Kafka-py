@@ -14,7 +14,7 @@ from sqlalchemy import (
     Uuid,
 )
 
-from messaging import define_outbox_table
+from messaging import define_outbox_table, define_processed_messages_table
 from order.domain.order import CancelReason, OrderStatus
 
 metadata = MetaData(
@@ -62,3 +62,4 @@ order_items = Table(
 )
 
 outbox = define_outbox_table(metadata)
+processed_messages = define_processed_messages_table(metadata)

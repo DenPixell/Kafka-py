@@ -33,7 +33,7 @@ select = [
 ignore = ["RUF001", "RUF002", "RUF003"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["contracts", "inventory", "messaging", "order"]
+known-first-party = ["antifraud", "contracts", "inventory", "messaging", "order"]
 
 [tool.mypy]
 python_version = "3.12"
@@ -47,6 +47,7 @@ explicit_package_bases = true
 mypy_path = [
     "libs/contracts/src",
     "libs/messaging/src",
+    "services/antifraud/src",
     "services/inventory/src",
     "services/order/src",
     ".",

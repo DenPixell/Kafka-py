@@ -154,6 +154,29 @@ services:
       kafka-init:
         condition: service_completed_successfully
 
+  web:
+    build:
+      context: .
+      args:
+        SERVICE: web
+    ports:
+      - "${WEB_HOST_PORT:-8000}:8000"
+    environment:
+      WEB_INVENTORY_URL: http://inventory:8000
+      WEB_ORDER_URL: http://order:8000
+      # Только для локального стенда. В реальном окружении — случайный секрет из хранилища.
+      WEB_SESSION_SECRET: ${WEB_SESSION_SECRET:-local-dev-secret-change-me}
+    depends_on:
+      inventory:
+        condition: service_healthy
+      order:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   kafka-ui:
     image: ghcr.io/kafbat/kafka-ui:v1.4.2
     ports:

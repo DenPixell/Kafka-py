@@ -1,4 +1,11 @@
-from contracts.antifraud import CheckOrder
+from contracts.antifraud import (
+    AntifraudEvent,
+    CheckOrder,
+    FraudCheckFailed,
+    FraudCheckPassed,
+    antifraud_commands,
+    antifraud_events,
+)
 from contracts.envelope import Message
 from contracts.inventory import (
     InventoryCommand,
@@ -15,7 +22,10 @@ from contracts.inventory import (
 )
 
 __all__ = [
+    "AntifraudEvent",
     "CheckOrder",
+    "FraudCheckFailed",
+    "FraudCheckPassed",
     "InventoryCommand",
     "InventoryEvent",
     "Message",
@@ -26,6 +36,8 @@ __all__ = [
     "StockReleased",
     "StockReservationFailed",
     "StockReserved",
+    "antifraud_commands",
+    "antifraud_events",
     "inventory_commands",
     "inventory_events",
 ]

@@ -44,6 +44,7 @@ class Variant:
 class Product:
     slug: str
     name: str
+    description: str
     category_slug: str
     colors: tuple[Color, ...]
     variants: tuple[Variant, ...]

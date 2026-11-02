@@ -33,6 +33,8 @@ async def test_products_by_category(client: httpx.AsyncClient) -> None:
     assert product["slug"] == "iphone-17"
     assert product["min_price_kopecks"] == 7_999_000
     assert product["in_stock"] is True
+    assert product["description"] == "Базовая модель"
+    assert [v["sku"] for v in product["variants"]] == ["iphone-17-256", "iphone-17-512"]
     assert product["colors"] == [
         {
             "slug": "black",

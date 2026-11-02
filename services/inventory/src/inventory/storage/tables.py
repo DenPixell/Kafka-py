@@ -43,6 +43,7 @@ products = Table(
     Column("slug", Text, primary_key=True),
     Column("category_slug", Text, ForeignKey("categories.slug"), nullable=False),
     Column("name", Text, nullable=False),
+    Column("description", Text, nullable=False, server_default=""),
     Column("position", Integer, nullable=False),
 )
 

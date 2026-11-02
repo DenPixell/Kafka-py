@@ -54,6 +54,7 @@ def repository() -> FakeCatalogRepository:
             Product(
                 slug="iphone-17",
                 name="iPhone 17",
+                description="Базовая модель",
                 category_slug="iphone",
                 colors=(BLACK,),
                 variants=(
@@ -64,6 +65,7 @@ def repository() -> FakeCatalogRepository:
             Product(
                 slug="macbook-neo",
                 name="MacBook Neo",
+                description="Доступный MacBook",
                 category_slug="mac",
                 colors=(BLACK,),
                 variants=(make_variant("macbook-neo-256", 6_999_000, available=0),),

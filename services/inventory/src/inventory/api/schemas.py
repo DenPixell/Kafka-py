@@ -32,6 +32,7 @@ class ColorOut(BaseModel):
 class ProductSummaryOut(BaseModel):
     slug: str
     name: str
+    description: str
     category_slug: str
     min_price_kopecks: int
     in_stock: bool
@@ -42,6 +43,7 @@ class ProductSummaryOut(BaseModel):
         return cls(
             slug=product.slug,
             name=product.name,
+            description=product.description,
             category_slug=product.category_slug,
             min_price_kopecks=product.min_price_kopecks,
             in_stock=product.in_stock,

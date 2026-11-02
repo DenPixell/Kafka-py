@@ -18,6 +18,7 @@
       "slug": "iphone-17",
       "category": "iphone",
       "name": "iPhone 17",
+      "description": "Базовая модель 2025 года: дисплей ProMotion 120 Гц, чип A19 и две камеры по 48 Мп.",
       "screens": {
         "6.3": 79990
       },
@@ -87,6 +88,7 @@
       "slug": "iphone-17-pro",
       "category": "iphone",
       "name": "iPhone 17 Pro",
+      "description": "Алюминиевый корпус, чип A19 Pro и три камеры по 48 Мп, включая телеобъектив.",
       "screens": {
         "6.3": 109990
       },
@@ -135,6 +137,7 @@
       "slug": "iphone-17-pro-max",
       "category": "iphone",
       "name": "iPhone 17 Pro Max",
+      "description": "Всё, что умеет 17 Pro, на экране 6,9″ и с самой долгой работой от батареи в линейке.",
       "screens": {
         "6.9": 124990
       },
@@ -184,6 +187,7 @@
       "slug": "iphone-18-pro",
       "category": "iphone",
       "name": "iPhone 18 Pro",
+      "description": "Новое поколение iPhone Pro 2026 года с экраном 6,3″ и памятью до 2 ТБ.",
       "screens": {
         "6.3": 119990
       },
@@ -240,6 +244,7 @@
       "slug": "iphone-18-pro-max",
       "category": "iphone",
       "name": "iPhone 18 Pro Max",
+      "description": "Флагман 2026 года с большим экраном 6,9″ и памятью до 2 ТБ.",
       "screens": {
         "6.9": 134990
       },
@@ -297,6 +302,7 @@
       "slug": "ipad-10",
       "category": "ipad",
       "name": "iPad (10-го поколения)",
+      "description": "Классический iPad с экраном 10,9″ и Touch ID в кнопке питания.",
       "screens": {
         "10.9": 34990
       },
@@ -347,6 +353,7 @@
       "slug": "ipad-a16",
       "category": "ipad",
       "name": "iPad (A16)",
+      "description": "iPad с чипом A16 и экраном 11″ — для учёбы, кино и заметок.",
       "screens": {
         "11": 39990
       },
@@ -406,6 +413,7 @@
       "slug": "ipad-pro-m4",
       "category": "ipad",
       "name": "iPad Pro (M4)",
+      "description": "Тонкий iPad Pro с OLED-дисплеем Ultra Retina XDR и чипом M4.",
       "screens": {
         "11": 99990,
         "13": 129990
@@ -447,6 +455,7 @@
       "slug": "ipad-pro-m5",
       "category": "ipad",
       "name": "iPad Pro (M5)",
+      "description": "iPad Pro с чипом M5 и OLED-дисплеем Ultra Retina XDR, 11″ или 13″.",
       "screens": {
         "11": 109990,
         "13": 139990
@@ -488,6 +497,7 @@
       "slug": "macbook-neo",
       "category": "mac",
       "name": "MacBook Neo",
+      "description": "Самый доступный MacBook: чип A18 Pro, экран 13″ и четыре ярких цвета.",
       "screens": {
         "13": 69990
       },
@@ -545,6 +555,7 @@
       "slug": "macbook-air-m5",
       "category": "mac",
       "name": "MacBook Air (M5)",
+      "description": "Лёгкий и бесшумный ноутбук без вентилятора с чипом M5, 13″ или 15″.",
       "screens": {
         "13": 119990,
         "15": 144990
@@ -610,6 +621,7 @@
       "slug": "macbook-pro-m5",
       "category": "mac",
       "name": "MacBook Pro (M5)",
+      "description": "MacBook Pro 14″ с чипом M5 и дисплеем Liquid Retina XDR.",
       "screens": {
         "14": 179990
       },
@@ -648,6 +660,7 @@
       "slug": "macbook-pro-m5-pro",
       "category": "mac",
       "name": "MacBook Pro (M5 Pro)",
+      "description": "Для монтажа и разработки: чип M5 Pro и экран 14″ или 16″.",
       "screens": {
         "14": 239990,
         "16": 289990
@@ -688,6 +701,7 @@
       "slug": "macbook-pro-m5-max",
       "category": "mac",
       "name": "MacBook Pro (M5 Max)",
+      "description": "Максимальная производительность: чип M5 Max для 3D, видео и машинного обучения.",
       "screens": {
         "14": 379990,
         "16": 409990

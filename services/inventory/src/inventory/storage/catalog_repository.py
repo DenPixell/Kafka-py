@@ -78,6 +78,7 @@ class PostgresCatalogRepository:
             Product(
                 slug=first.slug,
                 name=first.name,
+                description=first.description,
                 category_slug=first.category_slug,
                 colors=colors[first.slug],
                 variants=tuple(variants),
@@ -104,6 +105,7 @@ def _products_with_variants() -> Select[tuple[object, ...]]:
         select(
             products.c.slug,
             products.c.name,
+            products.c.description,
             products.c.category_slug,
             product_variants.c.sku,
             product_variants.c.storage_gb,

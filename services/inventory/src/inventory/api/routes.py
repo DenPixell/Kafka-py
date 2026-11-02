@@ -3,7 +3,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, Query, Request
 
-from inventory.api.schemas import CategoryOut, ProductOut, ProductSummaryOut, VariantInfoOut
+from inventory.api.schemas import CategoryOut, ProductOut, VariantInfoOut
 from inventory.service.catalog import CatalogService
 from inventory.storage.catalog_repository import PostgresCatalogRepository
 
@@ -30,8 +30,9 @@ async def list_categories(catalog: Catalog) -> list[CategoryOut]:
 
 
 @router.get("/products")
-async def list_products(catalog: Catalog, category: str | None = None) -> list[ProductSummaryOut]:
-    return [ProductSummaryOut.from_domain(p) for p in await catalog.list_products(category)]
+async def list_products(catalog: Catalog, category: str | None = None) -> list[ProductOut]:
+    """Модели с конфигурациями: на витрине память и цвет выбираются прямо в каталоге."""
+    return [ProductOut.from_domain(p) for p in await catalog.list_products(category)]
 
 
 @router.get("/products/{slug}")

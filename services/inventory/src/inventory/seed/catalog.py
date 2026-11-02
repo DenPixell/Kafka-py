@@ -11,7 +11,8 @@ from importlib.resources import files
 from typing import Any
 
 from pydantic import BaseModel, Field, PositiveInt
-from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy import Table
+from sqlalchemy.dialects.postgresql import Insert, insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from inventory.storage.tables import categories, product_colors, product_variants, products, stock
@@ -36,6 +37,7 @@ class ProductSeed(BaseModel):
     slug: str
     category: str
     name: str
+    description: str = ""
     # диагональ → базовая цена в рублях
     screens: dict[Decimal, PositiveInt] = Field(min_length=1)
     # объём памяти в ГБ → доплата в рублях
@@ -93,22 +95,31 @@ def build_variants(product: ProductSeed) -> list[VariantRow]:
 
 
 async def seed_catalog(session: AsyncSession, catalog: CatalogSeed) -> None:
-    """Добавляет недостающие записи. Существующие не трогает, поэтому повторный
-    запуск безопасен и не сбрасывает остатки и резервы."""
+    """Добавляет недостающие записи и обновляет описания из файла.
+
+    Названия, описания, цвета, фото и цены берутся из файла при каждом запуске.
+    Остатки и резервы — живые данные склада, их повторный запуск не трогает.
+    """
     category_rows: list[dict[str, Any]] = [
         {"slug": c.slug, "name": c.name, "position": i} for i, c in enumerate(catalog.categories)
     ]
     product_rows: list[dict[str, Any]] = [
-        {"slug": p.slug, "category_slug": p.category, "name": p.name, "position": i}
+        {
+            "slug": p.slug,
+            "category_slug": p.category,
+            "name": p.name,
+            "description": p.description,
+            "position": i,
+        }
         for i, p in enumerate(catalog.products)
     ]
     variants = [row for product in catalog.products for row in build_variants(product)]
 
-    await session.execute(insert(categories).values(category_rows).on_conflict_do_nothing())
-    await session.execute(insert(products).values(product_rows).on_conflict_do_nothing())
+    await session.execute(_upsert(categories, category_rows, ["slug"]))
+    await session.execute(_upsert(products, product_rows, ["slug"]))
     await session.execute(
-        insert(product_colors)
-        .values(
+        _upsert(
+            product_colors,
             [
                 {
                     "product_slug": p.slug,
@@ -120,13 +131,13 @@ async def seed_catalog(session: AsyncSession, catalog: CatalogSeed) -> None:
                 }
                 for p in catalog.products
                 for i, c in enumerate(p.colors)
-            ]
+            ],
+            ["product_slug", "slug"],
         )
-        .on_conflict_do_nothing()
     )
     await session.execute(
-        insert(product_variants)
-        .values(
+        _upsert(
+            product_variants,
             [
                 {
                     "sku": v.sku,
@@ -138,12 +149,21 @@ async def seed_catalog(session: AsyncSession, catalog: CatalogSeed) -> None:
                     "note": v.note,
                 }
                 for v in variants
-            ]
+            ],
+            ["sku"],
         )
-        .on_conflict_do_nothing()
     )
     await session.execute(
         insert(stock)
         .values([{"sku": v.sku, "quantity": v.quantity} for v in variants])
         .on_conflict_do_nothing()
+    )
+
+
+def _upsert(table: Table, rows: list[dict[str, Any]], key: list[str]) -> Insert:
+    """INSERT ... ON CONFLICT (key) DO UPDATE: новые строки добавляет, старые обновляет."""
+    statement = insert(table).values(rows)
+    return statement.on_conflict_do_update(
+        index_elements=key,
+        set_={column: statement.excluded[column] for column in rows[0] if column not in key},
     )

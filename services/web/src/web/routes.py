@@ -7,6 +7,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from web import session as store
 from web.clients.catalog import CatalogClient
 from web.clients.orders import OrderClient
+from web.configurator import configure
 from web.formatting import COUNTRIES
 
 router = APIRouter()
@@ -62,21 +63,67 @@ async def home(request: Request, catalog: Catalog) -> Response:
 
 
 @router.get("/catalog/{category}", response_class=HTMLResponse)
-async def category_page(request: Request, catalog: Catalog, category: str) -> Response:
+async def category_page(
+    request: Request, catalog: Catalog, category: str, model: str | None = None
+) -> Response:
     products = await catalog.products(category)
     if products is None:
         raise HTTPException(404)
     categories = {c.slug: c for c in await catalog.categories()}
-    return render(request, "category.html", category=categories[category], products=products)
+    # Фильтр по модели: неизвестная модель — показываем всю категорию.
+    selected = next((p for p in products if p.slug == model), None)
+    return render(
+        request,
+        "category.html",
+        category=categories[category],
+        products=products,
+        model=selected.slug if selected else None,
+        configurations=[configure(p) for p in ([selected] if selected else products)],
+    )
 
 
 @router.get("/products/{slug}", response_class=HTMLResponse)
-async def product_page(request: Request, catalog: Catalog, slug: str) -> Response:
+async def product_page(
+    request: Request,
+    catalog: Catalog,
+    slug: str,
+    color: str | None = None,
+    screen: str | None = None,
+    storage: str | None = None,
+) -> Response:
     product = await catalog.product(slug)
     if product is None:
         raise HTTPException(404)
-    default = next((v for v in product.variants if v.in_stock), None)
-    return render(request, "product.html", product=product, default=default)
+    categories = {c.slug: c for c in await catalog.categories()}
+    return render(
+        request,
+        "product.html",
+        config=configure(product, color, screen, storage),
+        category=categories.get(product.category_slug),
+        layout="page",
+    )
+
+
+@router.get("/products/{slug}/configure", response_class=HTMLResponse)
+async def configure_fragment(
+    request: Request,
+    catalog: Catalog,
+    slug: str,
+    color: str | None = None,
+    screen: str | None = None,
+    storage: str | None = None,
+    layout: str = "row",
+) -> Response:
+    """Блок товара с новым выбором: HTMX подставляет его вместо старого без перезагрузки."""
+    product = await catalog.product(slug)
+    if product is None:
+        raise HTTPException(404)
+    return render(
+        request,
+        "_configurator.html",
+        config=configure(product, color, screen, storage),
+        layout="page" if layout == "page" else "row",
+    )
 
 
 @router.post("/cart/add")

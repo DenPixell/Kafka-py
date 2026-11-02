@@ -13,18 +13,18 @@ class Category(BaseModel):
     name: str
 
 
-class ProductSummary(BaseModel):
+class Color(BaseModel):
     slug: str
     name: str
-    category_slug: str
-    min_price_kopecks: int
-    in_stock: bool
+    hex: str
+    images: list[str]
 
 
 class Variant(BaseModel):
     sku: str
     storage_gb: int
     screen_inch: Decimal
+    color_slug: str
     price_kopecks: int
     available: int
     note: str | None
@@ -34,25 +34,26 @@ class Variant(BaseModel):
         return self.available > 0
 
 
-class Product(ProductSummary):
+class Product(BaseModel):
+    slug: str
+    name: str
+    description: str
+    category_slug: str
+    min_price_kopecks: int
+    in_stock: bool
+    colors: list[Color]
     variants: list[Variant]
-
-    @property
-    def screens(self) -> list[Decimal]:
-        return sorted({v.screen_inch for v in self.variants})
-
-    def variants_for(self, screen: Decimal) -> list[Variant]:
-        return [v for v in self.variants if v.screen_inch == screen]
 
 
 class VariantInfo(Variant):
     product_slug: str
     product_name: str
     category_slug: str
+    color: Color
 
 
 _categories = TypeAdapter(list[Category])
-_products = TypeAdapter(list[ProductSummary])
+_products = TypeAdapter(list[Product])
 _variants = TypeAdapter(list[VariantInfo])
 
 
@@ -64,7 +65,7 @@ class CatalogClient:
         response = await self._get("/categories")
         return _categories.validate_json(response.content)
 
-    async def products(self, category: str | None = None) -> list[ProductSummary] | None:
+    async def products(self, category: str | None = None) -> list[Product] | None:
         """None — такой категории нет."""
         response = await self._get("/products", {"category": category} if category else None)
         if response.status_code == 404:

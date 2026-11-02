@@ -139,6 +139,21 @@ services:
       kafka-init:
         condition: service_completed_successfully  # топики уже созданы
 
+  antifraud-worker:
+    build:
+      context: .
+      args:
+        SERVICE: antifraud
+    environment:
+      ANTIFRAUD_DATABASE_URL: postgresql+asyncpg://${ANTIFRAUD_DB_USER:-antifraud_service}:${ANTIFRAUD_DB_PASSWORD:-antifraud_service}@postgres:5432/antifraud
+      ANTIFRAUD_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka-init:
+        condition: service_completed_successfully
+
   kafka-ui:
     image: ghcr.io/kafbat/kafka-ui:v1.4.2
     ports:

@@ -25,7 +25,7 @@ jobs:
         run: uv run ruff format --check .
 
       - name: Типы
-        run: uv run mypy libs
+        run: uv run mypy libs services
 
       - name: Тесты
         run: uv run pytest
@@ -37,3 +37,6 @@ jobs:
 
       - name: Проверить docker-compose.yml
         run: docker compose config --quiet
+
+      - name: Собрать образы
+        run: docker compose build

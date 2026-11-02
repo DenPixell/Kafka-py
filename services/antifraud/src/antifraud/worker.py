@@ -15,7 +15,7 @@ from antifraud.storage.db import create_engine, create_session_factory
 from antifraud.storage.tables import outbox, processed_messages
 from contracts import antifraud_commands
 from contracts.topics import ANTIFRAUD_COMMANDS
-from messaging import IdempotentConsumer, KafkaPublisher, OutboxRelay, OutboxWriter
+from messaging import OutboxWriter, run_worker
 
 
 async def main() -> None:
@@ -34,17 +34,17 @@ async def main() -> None:
         await service.handle(antifraud_commands.validate_json(value))
 
     engine = create_engine(str(settings.database_url))
-    session_factory = create_session_factory(engine)
-    publisher = KafkaPublisher(settings.kafka_bootstrap_servers)
-    consumer = IdempotentConsumer(session_factory, processed_messages, handle_command)
-    await publisher.start()
     try:
-        await asyncio.gather(
-            consumer.run([ANTIFRAUD_COMMANDS], "antifraud", settings.kafka_bootstrap_servers),
-            OutboxRelay(session_factory, outbox, publisher).run(),
+        await run_worker(
+            session_factory=create_session_factory(engine),
+            outbox_table=outbox,
+            processed_table=processed_messages,
+            handler=handle_command,
+            topics=[ANTIFRAUD_COMMANDS],
+            group_id="antifraud",
+            bootstrap_servers=settings.kafka_bootstrap_servers,
         )
     finally:
-        await publisher.stop()
         await engine.dispose()
 
 

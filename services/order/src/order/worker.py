@@ -12,7 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from contracts import AntifraudEvent, InventoryEvent
 from contracts.topics import ANTIFRAUD_EVENTS, INVENTORY_EVENTS
-from messaging import IdempotentConsumer, KafkaPublisher, OutboxRelay, OutboxWriter
+from messaging import OutboxWriter, run_worker
 from order.config import Settings
 from order.service.saga import SagaService
 from order.storage.db import create_engine, create_session_factory
@@ -35,19 +35,17 @@ async def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
     settings = Settings()
     engine = create_engine(str(settings.database_url))
-    session_factory = create_session_factory(engine)
-    publisher = KafkaPublisher(settings.kafka_bootstrap_servers)
-    consumer = IdempotentConsumer(session_factory, processed_messages, handle_event)
-    await publisher.start()
     try:
-        await asyncio.gather(
-            consumer.run(
-                [INVENTORY_EVENTS, ANTIFRAUD_EVENTS], "order", settings.kafka_bootstrap_servers
-            ),
-            OutboxRelay(session_factory, outbox, publisher).run(),
+        await run_worker(
+            session_factory=create_session_factory(engine),
+            outbox_table=outbox,
+            processed_table=processed_messages,
+            handler=handle_event,
+            topics=[INVENTORY_EVENTS, ANTIFRAUD_EVENTS],
+            group_id="order",
+            bootstrap_servers=settings.kafka_bootstrap_servers,
         )
     finally:
-        await publisher.stop()
         await engine.dispose()
 
 

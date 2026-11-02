@@ -1,0 +1,17 @@
+[project]
+name = "outbox"
+version = "0.1.0"
+description = "Transactional Outbox: запись сообщений в БД и их публикация в Kafka"
+requires-python = ">=3.12"
+dependencies = [
+    "aiokafka>=0.15.0",
+    "contracts",
+    "sqlalchemy[asyncio]>=2.1.6",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv.sources]
+contracts = { workspace = true }

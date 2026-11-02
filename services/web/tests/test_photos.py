@@ -2,7 +2,9 @@
 
 Apple иногда отдаёт один и тот же кадр под разными идентификаторами (например,
 основное фото и «_AV1»), а файлы при этом отличаются байтами из-за сжатия.
-Поэтому сравниваем не файлы, а уменьшенные чёрно-белые копии изображений.
+Бывает и тот же ракурс в другом масштабе: MacBook Air 13″ и 15″ спереди.
+Поэтому сравниваем не файлы, а сам предмет: обрезаем светлый фон, приводим
+к одному размеру и сравниваем чёрно-белые копии.
 """
 
 import json
@@ -10,15 +12,15 @@ from itertools import combinations
 from pathlib import Path
 
 import pytest
-from PIL import Image, ImageChops, ImageStat
+from PIL import Image, ImageChops, ImageFilter, ImageStat
 
 ROOT = Path(__file__).resolve().parents[3]
 PHOTOS = ROOT / "services/web/src/web/static/products"
 CATALOG = json.loads(
     (ROOT / "services/inventory/src/inventory/seed/catalog.json").read_text(encoding="utf-8")
 )
-# Средняя разница яркости меньше 3 из 255 — для глаза это один и тот же кадр.
-SAME_PICTURE = 3.0
+# Порог подобран на реальных фото: повторы дают 2–7 из 255, разные ракурсы — от 10.
+SAME_PICTURE = 8.0
 
 COLORS = [
     pytest.param(color["images"], id=f"{product['slug']}-{color['slug']}")
@@ -28,7 +30,16 @@ COLORS = [
 
 
 def thumbnail(name: str) -> Image.Image:
-    return Image.open(PHOTOS / name).convert("L").resize((64, 64))
+    return normalized(Image.open(PHOTOS / name))
+
+
+def normalized(image: Image.Image) -> Image.Image:
+    gray = image.convert("L")
+    # Всё темнее почти белого — это предмет. Обрезаем фон вокруг него.
+    content = gray.point(lambda value: 255 if value < 235 else 0).getbbox()
+    subject = gray.crop(content) if content else gray
+    # Крупная сетка и лёгкое размытие: мелкие сдвиги и сжатие не мешают сравнению.
+    return subject.resize((16, 16)).filter(ImageFilter.GaussianBlur(1))
 
 
 @pytest.mark.parametrize("images", COLORS)

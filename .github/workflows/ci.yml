@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Установить зависимости
+        run: uv sync --all-packages --locked
+
+      - name: Линтер
+        run: uv run ruff check .
+
+      - name: Форматирование
+        run: uv run ruff format --check .
+
+      - name: Типы
+        run: uv run mypy libs
+
+      - name: Тесты
+        run: uv run pytest
+
+  compose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Проверить docker-compose.yml
+        run: docker compose config --quiet

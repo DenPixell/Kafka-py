@@ -1,6 +1,6 @@
 from typing import Protocol
 
-from inventory.domain.catalog import Category, Product
+from inventory.domain.catalog import Category, Product, VariantInfo
 from inventory.domain.errors import CategoryNotFoundError, ProductNotFoundError
 
 
@@ -14,6 +14,8 @@ class CatalogRepository(Protocol):
     async def list_products(self, category_slug: str | None) -> list[Product]: ...
 
     async def get_product(self, slug: str) -> Product | None: ...
+
+    async def get_variants(self, skus: list[str]) -> list[VariantInfo]: ...
 
 
 class CatalogService:
@@ -33,3 +35,7 @@ class CatalogService:
         if product is None:
             raise ProductNotFoundError(slug)
         return product
+
+    async def get_variants(self, skus: list[str]) -> list[VariantInfo]:
+        """Неизвестные артикулы просто не попадают в ответ."""
+        return await self._repository.get_variants(skus)

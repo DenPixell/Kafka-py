@@ -50,3 +50,14 @@ async def test_category_filter_and_existence(session: AsyncSession) -> None:
     assert {p.category_slug for p in ipads} == {"ipad"}
     assert await repository.category_exists("ipad") is True
     assert await repository.category_exists("watch") is False
+
+
+async def test_variants_by_sku(session: AsyncSession) -> None:
+    found = await PostgresCatalogRepository(session).get_variants(
+        ["macbook-neo-512", "ipad-pro-m5-13-256", "nope"]
+    )
+
+    assert {(v.product_name, v.variant.sku, v.variant.note) for v in found} == {
+        ("MacBook Neo", "macbook-neo-512", "с Touch ID"),
+        ("iPad Pro (M5)", "ipad-pro-m5-13-256", None),
+    }

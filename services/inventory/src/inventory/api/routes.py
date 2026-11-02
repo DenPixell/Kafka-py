@@ -1,9 +1,9 @@
 from collections.abc import AsyncIterator
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, Query, Request
 
-from inventory.api.schemas import CategoryOut, ProductOut, ProductSummaryOut
+from inventory.api.schemas import CategoryOut, ProductOut, ProductSummaryOut, VariantInfoOut
 from inventory.service.catalog import CatalogService
 from inventory.storage.catalog_repository import PostgresCatalogRepository
 
@@ -37,3 +37,11 @@ async def list_products(catalog: Catalog, category: str | None = None) -> list[P
 @router.get("/products/{slug}")
 async def get_product(catalog: Catalog, slug: str) -> ProductOut:
     return ProductOut.from_domain(await catalog.get_product(slug))
+
+
+@router.get("/variants")
+async def get_variants(
+    catalog: Catalog, sku: Annotated[list[str], Query(min_length=1, max_length=50)]
+) -> list[VariantInfoOut]:
+    """Конфигурации по артикулам: /variants?sku=a&sku=b."""
+    return [VariantInfoOut.from_info(v) for v in await catalog.get_variants(sku)]

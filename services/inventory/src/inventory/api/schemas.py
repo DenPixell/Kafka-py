@@ -5,7 +5,7 @@ from decimal import Decimal
 
 from pydantic import BaseModel
 
-from inventory.domain.catalog import Category, Product, Variant
+from inventory.domain.catalog import Category, Product, Variant, VariantInfo
 
 
 class CategoryOut(BaseModel):
@@ -65,4 +65,17 @@ class ProductOut(ProductSummaryOut):
         return cls(
             **summary.model_dump(),
             variants=[VariantOut.from_domain(v) for v in product.variants],
+        )
+
+
+class VariantInfoOut(VariantOut):
+    product_slug: str
+    product_name: str
+
+    @classmethod
+    def from_info(cls, info: VariantInfo) -> "VariantInfoOut":
+        return cls(
+            **VariantOut.from_domain(info.variant).model_dump(),
+            product_slug=info.product_slug,
+            product_name=info.product_name,
         )

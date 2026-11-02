@@ -54,3 +54,21 @@ async def test_not_found_is_404(client: httpx.AsyncClient, url: str) -> None:
     response = await client.get(url)
 
     assert response.status_code == 404
+
+
+async def test_variants_by_sku_skip_unknown(client: httpx.AsyncClient) -> None:
+    response = await client.get(
+        "/variants", params=[("sku", "iphone-17-512"), ("sku", "nope"), ("sku", "macbook-neo-256")]
+    )
+
+    assert response.status_code == 200
+    assert [(v["sku"], v["product_name"]) for v in response.json()] == [
+        ("iphone-17-512", "iPhone 17"),
+        ("macbook-neo-256", "MacBook Neo"),
+    ]
+
+
+async def test_variants_need_at_least_one_sku(client: httpx.AsyncClient) -> None:
+    response = await client.get("/variants")
+
+    assert response.status_code == 422

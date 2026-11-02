@@ -2,7 +2,7 @@ from decimal import Decimal
 
 import pytest
 
-from inventory.domain.catalog import Category, Product, Variant
+from inventory.domain.catalog import Category, Product, Variant, VariantInfo
 
 
 class FakeCatalogRepository:
@@ -23,6 +23,14 @@ class FakeCatalogRepository:
 
     async def get_product(self, slug: str) -> Product | None:
         return next((p for p in self._products if p.slug == slug), None)
+
+    async def get_variants(self, skus: list[str]) -> list[VariantInfo]:
+        return [
+            VariantInfo(p.slug, p.name, v)
+            for p in self._products
+            for v in p.variants
+            if v.sku in skus
+        ]
 
 
 def make_variant(sku: str, price_kopecks: int, available: int = 5) -> Variant:

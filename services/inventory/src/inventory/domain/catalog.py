@@ -43,3 +43,12 @@ class Product:
     @property
     def in_stock(self) -> bool:
         return any(variant.in_stock for variant in self.variants)
+
+
+@dataclass(frozen=True)
+class VariantInfo:
+    """Конфигурация вместе с названием модели: для корзины на витрине."""
+
+    product_slug: str
+    product_name: str
+    variant: Variant

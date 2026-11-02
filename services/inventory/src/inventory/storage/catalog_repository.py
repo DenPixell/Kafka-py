@@ -3,7 +3,7 @@ from collections.abc import Sequence
 from sqlalchemy import Row, Select, exists, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from inventory.domain.catalog import Category, Product, Variant
+from inventory.domain.catalog import Category, Product, Variant, VariantInfo
 from inventory.storage.tables import categories, product_variants, products, stock
 
 
@@ -34,6 +34,16 @@ class PostgresCatalogRepository:
         )
         found = _group_into_products(result.all())
         return found[0] if found else None
+
+    async def get_variants(self, skus: list[str]) -> list[VariantInfo]:
+        result = await self._session.execute(
+            _products_with_variants().where(product_variants.c.sku.in_(skus))
+        )
+        return [
+            VariantInfo(product_slug=product.slug, product_name=product.name, variant=variant)
+            for product in _group_into_products(result.all())
+            for variant in product.variants
+        ]
 
 
 def _products_with_variants() -> Select[tuple[object, ...]]:

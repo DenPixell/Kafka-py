@@ -1,6 +1,7 @@
+from typing import Any
 from uuid import UUID
 
-from sqlalchemy import insert, select, update
+from sqlalchemy import Row, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from order.domain.order import CancelReason, Order, OrderItem, OrderStatus
@@ -38,9 +39,21 @@ class PostgresOrderRepository:
         row = (await self._session.execute(query)).first()
         if row is None:
             return None
+        return await self._load(row)
+
+    async def list_for_user(self, user_id: str, limit: int) -> list[Order]:
+        rows = await self._session.execute(
+            select(orders)
+            .where(orders.c.user_id == user_id)
+            .order_by(orders.c.created_at.desc())
+            .limit(limit)
+        )
+        return [await self._load(row) for row in rows.all()]
+
+    async def _load(self, row: Row[Any]) -> Order:
         items = await self._session.execute(
             select(order_items.c.sku, order_items.c.quantity)
-            .where(order_items.c.order_id == order_id)
+            .where(order_items.c.order_id == row.id)
             .order_by(order_items.c.sku)
         )
         return Order(

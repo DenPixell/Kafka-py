@@ -14,6 +14,8 @@ class OrderRepository(Protocol):
 
     async def update(self, order: Order) -> None: ...
 
+    async def list_for_user(self, user_id: str, limit: int) -> list[Order]: ...
+
 
 class Outbox(Protocol):
     async def put(self, topic: str, message: Message, key: str | None = None) -> None: ...
@@ -49,3 +51,7 @@ class OrderService:
         if order is None or order.user_id != user_id:
             raise OrderNotFoundError(order_id)
         return order
+
+    async def list_orders(self, user_id: str, limit: int = 20) -> list[Order]:
+        """Последние заказы пользователя, новые сверху."""
+        return await self._orders.list_for_user(user_id, limit)

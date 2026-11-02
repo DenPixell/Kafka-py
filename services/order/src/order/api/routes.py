@@ -40,6 +40,11 @@ async def create_order(body: CreateOrderIn, user_id: UserId, orders: Orders) -> 
     return OrderOut.from_domain(order)
 
 
+@router.get("/orders")
+async def list_orders(user_id: UserId, orders: Orders) -> list[OrderOut]:
+    return [OrderOut.from_domain(o) for o in await orders.list_orders(user_id)]
+
+
 @router.get("/orders/{order_id}")
 async def get_order(order_id: UUID, user_id: UserId, orders: Orders) -> OrderOut:
     return OrderOut.from_domain(await orders.get_order(order_id, user_id))

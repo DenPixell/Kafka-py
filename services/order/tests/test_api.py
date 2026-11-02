@@ -67,3 +67,13 @@ async def test_unknown_order_is_404(client: httpx.AsyncClient) -> None:
     response = await client.get(f"/orders/{uuid4()}", headers=ANNA)
 
     assert response.status_code == 404
+
+
+async def test_list_shows_only_own_orders_newest_first(client: httpx.AsyncClient) -> None:
+    first = (await client.post("/orders", json=BODY, headers=ANNA)).json()["id"]
+    second = (await client.post("/orders", json=BODY, headers=ANNA)).json()["id"]
+    await client.post("/orders", json=BODY, headers={"X-User-Id": "boris"})
+
+    response = await client.get("/orders", headers=ANNA)
+
+    assert [o["id"] for o in response.json()] == [second, first]

@@ -18,6 +18,10 @@ class FakeOrderRepository:
     async def get(self, order_id: UUID, *, for_update: bool = False) -> Order | None:
         return self.orders.get(order_id)
 
+    async def list_for_user(self, user_id: str, limit: int) -> list[Order]:
+        own = [o for o in self.orders.values() if o.user_id == user_id]
+        return sorted(own, key=lambda o: o.created_at, reverse=True)[:limit]
+
     async def update(self, order: Order) -> None:
         self.updated.append(order.status)
 

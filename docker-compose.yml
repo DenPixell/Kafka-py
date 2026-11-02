@@ -1,0 +1,88 @@
+# Инфраструктура для локального запуска: Kafka, PostgreSQL и Kafka UI.
+# Сервисы приложения добавятся сюда на следующих этапах.
+# Все переменные имеют значения по умолчанию, поэтому стек поднимается без .env.
+
+name: apple-store
+
+services:
+  kafka:
+    image: apache/kafka:4.3.1
+    hostname: kafka
+    ports:
+      - "${KAFKA_HOST_PORT:-9092}:9092"
+    environment:
+      # Режим KRaft: один узел сам себе брокер и контроллер, ZooKeeper не нужен.
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      # INTERNAL — для контейнеров внутри сети compose, EXTERNAL — для запуска с хоста.
+      KAFKA_LISTENERS: INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://localhost:${KAFKA_HOST_PORT:-9092}
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      # Один брокер, поэтому все служебные топики с одной репликой.
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      # Фиксированный идентификатор кластера для локального стенда (формат base64 UUID).
+      CLUSTER_ID: 4L6g3nShT-eMCtK--X86sw
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 > /dev/null 2>&1"]
+      interval: 5s
+      timeout: 10s
+      retries: 20
+      start_period: 10s
+
+  kafka-init:
+    image: apache/kafka:4.3.1
+    depends_on:
+      kafka:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "/create-topics.sh"]
+    volumes:
+      - ./infra/kafka/create-topics.sh:/create-topics.sh:ro
+    restart: "no"
+
+  postgres:
+    image: postgres:17.11-alpine
+    ports:
+      # 5433 на хосте, чтобы не конфликтовать с локально установленным PostgreSQL.
+      - "${POSTGRES_HOST_PORT:-5433}:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      ORDER_DB_USER: ${ORDER_DB_USER:-order_service}
+      ORDER_DB_PASSWORD: ${ORDER_DB_PASSWORD:-order_service}
+      INVENTORY_DB_USER: ${INVENTORY_DB_USER:-inventory_service}
+      INVENTORY_DB_PASSWORD: ${INVENTORY_DB_PASSWORD:-inventory_service}
+      ANTIFRAUD_DB_USER: ${ANTIFRAUD_DB_USER:-antifraud_service}
+      ANTIFRAUD_DB_PASSWORD: ${ANTIFRAUD_DB_PASSWORD:-antifraud_service}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./infra/postgres/init-databases.sh:/docker-entrypoint-initdb.d/init-databases.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  kafka-ui:
+    image: ghcr.io/kafbat/kafka-ui:v1.4.2
+    ports:
+      - "${KAFKA_UI_HOST_PORT:-8080}:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+    depends_on:
+      kafka:
+        condition: service_healthy
+
+volumes:
+  kafka-data:
+  postgres-data:

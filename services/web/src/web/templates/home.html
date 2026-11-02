@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% from "_product_card.html" import product_card %}
+{% block content %}
+<section class="hero">
+  <h1>Техника, которую мы бережно проверяем</h1>
+  <p class="muted">Каждый заказ проходит резерв на складе и проверку безопасности. Статус обновляется на странице заказа в реальном времени.</p>
+</section>
+{% for category, products in sections %}
+  <section class="section">
+    <div class="section__head">
+      <h2>{{ category.name }}</h2>
+      <a class="link" href="/catalog/{{ category.slug }}">Все модели</a>
+    </div>
+    <div class="grid">
+      {% for product in products %}{{ product_card(product) }}{% endfor %}
+    </div>
+  </section>
+{% endfor %}
+{% endblock %}

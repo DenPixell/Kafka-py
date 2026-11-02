@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% from "_icons.html" import device_icon %}
+{% block title %}Корзина{% endblock %}
+{% block content %}
+<h1>Корзина</h1>
+{% if not lines %}
+  <div class="card empty">
+    <p>В корзине пока пусто.</p>
+    <a class="button button--primary" href="/">Перейти в каталог</a>
+  </div>
+{% else %}
+  <div class="cart">
+    <div class="card cart__lines">
+      {% for variant, quantity in lines %}
+        <div class="line">
+          <span class="line__icon">{{ device_icon(variant.category_slug, 40) }}</span>
+          <div class="line__info">
+            <a class="line__name" href="/products/{{ variant.product_slug }}">{{ variant.product_name }}</a>
+            <span class="muted">
+              {{ variant.screen_inch | screen }} · {{ variant.storage_gb | storage }}{% if variant.note %} · {{ variant.note }}{% endif %}
+            </span>
+          </div>
+          <form class="line__qty" method="post" action="/cart/update">
+            <input type="hidden" name="sku" value="{{ variant.sku }}">
+            <label class="visually-hidden" for="qty-{{ variant.sku }}">Количество</label>
+            <input id="qty-{{ variant.sku }}" type="number" name="quantity" min="0" max="10" value="{{ quantity }}">
+            <button class="button button--small" type="submit">Обновить</button>
+          </form>
+          <span class="line__price">{{ (variant.price_kopecks * quantity) | money }}</span>
+          <form method="post" action="/cart/update">
+            <input type="hidden" name="sku" value="{{ variant.sku }}">
+            <input type="hidden" name="quantity" value="0">
+            <button class="button button--ghost button--small" type="submit" aria-label="Удалить {{ variant.product_name }}">Удалить</button>
+          </form>
+        </div>
+      {% endfor %}
+    </div>
+
+    <form class="card checkout" method="post" action="/checkout">
+      <h2>Оформление</h2>
+      <label for="country">Страна доставки</label>
+      <select id="country" name="delivery_country" required>
+        {% for code, name in countries.items() %}<option value="{{ code }}">{{ name }}</option>{% endfor %}
+      </select>
+      <p class="checkout__total"><span>Итого</span><strong>{{ total | money }}</strong></p>
+      <p class="muted small">Окончательную сумму посчитает склад при резерве по текущим ценам.</p>
+      <button class="button button--primary button--wide" type="submit">Оформить заказ</button>
+    </form>
+  </div>
+{% endif %}
+{% endblock %}

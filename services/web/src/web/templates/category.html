@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% from "_product_card.html" import product_card %}
+{% block title %}{{ category.name }}{% endblock %}
+{% block content %}
+<h1>{{ category.name }}</h1>
+<div class="grid">
+  {% for product in products %}{{ product_card(product) }}{% endfor %}
+</div>
+{% endblock %}

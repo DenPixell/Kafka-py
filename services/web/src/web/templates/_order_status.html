@@ -1,0 +1,22 @@
+{#
+  Пока статус не финальный, фрагмент раз в секунду запрашивает сам себя и заменяется
+  свежей версией. В финальном статусе атрибутов hx-* нет — опрос прекращается.
+#}
+{% set rank = {"NEW": 0, "RESERVING": 1, "FRAUD_CHECK": 2, "CONFIRMED": 3}.get(order.status, 0) %}
+<section id="order-status" class="card status status--{{ order.status | status_tone }}"
+  {% if not order.is_final %}hx-get="/orders/{{ order.id }}/status" hx-trigger="every 1s" hx-swap="outerHTML"{% endif %}
+  aria-live="polite">
+  <h2>{{ order.status | status_label }}</h2>
+  {% if order.status in ("CANCELLING", "CANCELLED") %}
+    <p>{{ order.cancel_reason | cancel_reason }}</p>
+    {% if order.status == "CANCELLED" and order.cancel_reason == "fraud" %}
+      <p class="muted small">Отложенный товар уже вернулся на склад.</p>
+    {% endif %}
+  {% else %}
+    <ol class="steps">
+      {% for step_rank, title in [(1, "Резерв на складе"), (2, "Проверка безопасности"), (3, "Подтверждение")] %}
+        <li class="step {% if rank > step_rank or order.status == 'CONFIRMED' %}step--done{% elif rank == step_rank %}step--current{% endif %}">{{ title }}</li>
+      {% endfor %}
+    </ol>
+  {% endif %}
+</section>

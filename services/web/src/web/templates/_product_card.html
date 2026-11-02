@@ -1,0 +1,9 @@
+{% from "_icons.html" import device_icon %}
+{% macro product_card(product) %}
+<a class="card product-card" href="/products/{{ product.slug }}">
+  <span class="product-card__image">{{ device_icon(product.category_slug, 72) }}</span>
+  <span class="product-card__name">{{ product.name }}</span>
+  <span class="product-card__price">от {{ product.min_price_kopecks | money }}</span>
+  {% if not product.in_stock %}<span class="badge badge--muted">Нет в наличии</span>{% endif %}
+</a>
+{% endmacro %}

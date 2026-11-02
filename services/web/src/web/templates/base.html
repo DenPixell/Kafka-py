@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Техносад{% endblock %} — учебный магазин</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}">
+  <script src="{{ url_for('static', path='htmx.min.js') }}" defer></script>
+</head>
+<body>
+  <header class="header">
+    <div class="container header__row">
+      <a class="brand" href="/">Техносад</a>
+      <nav class="nav" aria-label="Каталог">
+        <a href="/catalog/iphone">iPhone</a>
+        <a href="/catalog/ipad">iPad</a>
+        <a href="/catalog/mac">MacBook</a>
+      </nav>
+      <div class="header__actions">
+        <a class="nav-link" href="/orders">Заказы</a>
+        <a class="nav-link" href="/cart">Корзина{% if cart_count %} <span class="count">{{ cart_count }}</span>{% endif %}</a>
+        <form class="buyer" method="post" action="/buyer">
+          <label for="buyer">Покупатель</label>
+          <select id="buyer" name="buyer" onchange="this.form.submit()">
+            {% for id, name in buyers.items() %}
+              <option value="{{ id }}" {% if id == buyer %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+          </select>
+          <input type="hidden" name="next_url" value="{{ request.url.path }}">
+          <noscript><button class="button button--small" type="submit">Выбрать</button></noscript>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  <main class="container main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      Учебный проект, не магазин: заказы не оплачиваются и не доставляются.
+      Не связан с Apple Inc., названия моделей используются только для описания товара.
+    </div>
+  </footer>
+</body>
+</html>

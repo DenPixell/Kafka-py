@@ -2,7 +2,7 @@
 {% block title %}Заказ{% endblock %}
 {% block content %}
 <a class="link back" href="/orders">← Все заказы</a>
-<h1>Заказ от {{ order.created_at.strftime('%d.%m.%Y %H:%M') }}</h1>
+<h1>Заказ от {{ order.created_at | local_time }}</h1>
 <div class="order">
   {% include "_order_status.html" %}
   <div class="card">
@@ -12,13 +12,12 @@
       <div class="line line--compact">
         <span class="line__info">
           <strong>{{ variant.product_name if variant else item.sku }}</strong>
-          {% if variant %}<span class="muted">{{ variant.storage_gb | storage }}{% if variant.note %} · {{ variant.note }}{% endif %}</span>{% endif %}
+          {% if variant %}<span class="muted">{{ variant.screen_inch | screen }} · {{ variant.storage_gb | storage }}{% if variant.note %} · {{ variant.note }}{% endif %}</span>{% endif %}
         </span>
         <span>× {{ item.quantity }}</span>
       </div>
     {% endfor %}
     <p class="checkout__total"><span>Доставка</span><span>{{ order.delivery_country | country }}</span></p>
-    <p class="checkout__total"><span>Сумма</span><strong>{% if order.total_kopecks %}{{ order.total_kopecks | money }}{% else %}считаем…{% endif %}</strong></p>
   </div>
 </div>
 {% endblock %}

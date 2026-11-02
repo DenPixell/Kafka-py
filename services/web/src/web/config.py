@@ -1,3 +1,5 @@
+from zoneinfo import ZoneInfo
+
 from pydantic import AnyHttpUrl, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -11,3 +13,9 @@ class Settings(BaseSettings):
     order_url: AnyHttpUrl
     # Ключ подписи cookie с корзиной: без него корзину можно подделать.
     session_secret: SecretStr
+    # В БД время в UTC, покупателю показываем по его часовому поясу.
+    timezone: str = "Europe/Moscow"
+
+    @property
+    def zone(self) -> ZoneInfo:
+        return ZoneInfo(self.timezone)

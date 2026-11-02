@@ -25,7 +25,7 @@ from web.routes import render, router
 HERE = Path(__file__).parent
 
 
-def create_templates() -> Jinja2Templates:
+def create_templates(settings: Settings) -> Jinja2Templates:
     templates = Jinja2Templates(directory=HERE / "templates")
     templates.env.filters.update(
         money=formatting.money,
@@ -35,6 +35,9 @@ def create_templates() -> Jinja2Templates:
         status_tone=formatting.status_tone,
         cancel_reason=formatting.cancel_reason,
         country=formatting.country,
+        local_time=lambda moment, pattern="%d.%m.%Y %H:%M": formatting.local_time(
+            moment, settings.zone, pattern
+        ),
     )
     return templates
 
@@ -54,7 +57,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             yield
 
     app = FastAPI(title="web", lifespan=lifespan, docs_url=None, redoc_url=None)
-    app.state.templates = create_templates()
+    app.state.templates = create_templates(settings)
     # SameSite=Lax: браузер не отправит cookie с POST-запросом с чужого сайта,
     # поэтому чужая страница не сможет оформить заказ от имени покупателя.
     app.add_middleware(

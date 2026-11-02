@@ -9,7 +9,7 @@
     {% for order in orders %}
       <a class="list__row" href="/orders/{{ order.id }}">
         <span>
-          <strong>Заказ от {{ order.created_at.strftime('%d.%m %H:%M') }}</strong>
+          <strong>Заказ от {{ order.created_at | local_time('%d.%m %H:%M') }}</strong>
           <span class="muted small">{{ order.items | sum(attribute='quantity') }} шт. · {{ order.delivery_country | country }}</span>
         </span>
         <span class="list__right">

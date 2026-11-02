@@ -1,6 +1,8 @@
-"""Фильтры для шаблонов: деньги, память, диагональ, статусы."""
+"""Фильтры для шаблонов: деньги, память, диагональ, время, статусы."""
 
+from datetime import datetime
 from decimal import Decimal
+from zoneinfo import ZoneInfo
 
 NBSP = " "
 THIN_NBSP = " "
@@ -58,3 +60,7 @@ def cancel_reason(reason: str | None) -> str:
 
 def country(code: str) -> str:
     return COUNTRIES.get(code, code)
+
+
+def local_time(moment: datetime, zone: ZoneInfo, pattern: str = "%d.%m.%Y %H:%M") -> str:
+    return moment.astimezone(zone).strftime(pattern)

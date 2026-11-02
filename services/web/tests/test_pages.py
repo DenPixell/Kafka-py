@@ -130,3 +130,31 @@ async def test_unavailable_service_shows_503(
 
     assert response.status_code == 503
     assert "временно недоступен" in response.text
+
+
+async def test_order_time_is_shown_in_moscow_time(
+    client: httpx.AsyncClient, backend: FakeBackend
+) -> None:
+    await add_neo_512(client)
+    order_url = (await client.post("/checkout", data={"delivery_country": "RU"})).headers[
+        "location"
+    ]
+
+    text = (await client.get(order_url)).text
+
+    # В бэкенде заказ создан в 12:00 UTC.
+    assert "02.11.2026 15:00" in text
+
+
+async def test_total_appears_in_status_fragment_once_known(
+    client: httpx.AsyncClient, backend: FakeBackend
+) -> None:
+    await add_neo_512(client)
+    order_url = (await client.post("/checkout", data={"delivery_country": "RU"})).headers[
+        "location"
+    ]
+    next(iter(backend.orders.values())).update(status="FRAUD_CHECK", total_kopecks=7_999_000)
+
+    fragment = (await client.get(f"{order_url}/status")).text
+
+    assert "79 990 ₽" in fragment

@@ -19,4 +19,9 @@
       {% endfor %}
     </ol>
   {% endif %}
+  {# Сумму считает склад при резерве, поэтому она тоже часть обновляемого блока. #}
+  <p class="checkout__total">
+    <span>Сумма</span>
+    <strong>{% if order.total_kopecks %}{{ order.total_kopecks | money }}{% elif order.is_final %}—{% else %}считаем…{% endif %}</strong>
+  </p>
 </section>

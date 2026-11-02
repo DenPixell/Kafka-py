@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 from testcontainers.community.postgres import PostgresContainer
 
 from contracts import OrderLine, ReserveStock
-from messaging import OutboxRelay, OutboxWriter, define_outbox_table
+from messaging import Headers, OutboxRelay, OutboxWriter, define_outbox_table
 
 pytestmark = pytest.mark.integration
 
@@ -23,7 +23,9 @@ class RecordingPublisher:
         self.sent: list[tuple[str, str, dict[str, object]]] = []
         self.fail = fail
 
-    async def publish(self, topic: str, key: str, value: bytes) -> None:
+    async def publish(
+        self, topic: str, key: str, value: bytes, headers: Headers | None = None
+    ) -> None:
         if self.fail:
             raise ConnectionError("Kafka недоступна")
         self.sent.append((topic, key, json.loads(value)))

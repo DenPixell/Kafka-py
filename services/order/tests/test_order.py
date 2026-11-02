@@ -30,17 +30,29 @@ def test_out_of_stock_cancels_right_away() -> None:
     assert order.cancel_reason is CancelReason.OUT_OF_STOCK
 
 
-def test_fraud_goes_through_cancelling_to_release_stock() -> None:
+def reserved_order() -> Order:
     order = make_order()
     order.start_reservation()
     order.mark_reserved(total_kopecks=7_999_000)
+    return order
+
+
+def test_fraud_rejection_waits_for_stock_release() -> None:
+    order = reserved_order()
 
     order.reject_by_fraud()
+
     assert order.status is OrderStatus.CANCELLING
+    assert order.cancel_reason is CancelReason.FRAUD
+
+
+def test_released_stock_completes_cancellation() -> None:
+    order = reserved_order()
+    order.reject_by_fraud()
 
     order.mark_released()
+
     assert order.status is OrderStatus.CANCELLED
-    assert order.cancel_reason is CancelReason.FRAUD
 
 
 def test_cannot_confirm_before_fraud_check() -> None:

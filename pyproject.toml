@@ -39,6 +39,8 @@ known-first-party = ["contracts", "inventory", "order", "outbox"]
 python_version = "3.12"
 strict = true
 plugins = ["pydantic.mypy"]
+# Миграции генерирует Alembic, а env.py в каждом сервисе называется одинаково.
+exclude = ["/migrations/"]
 
 # У этих библиотек нет аннотаций типов.
 [[tool.mypy.overrides]]

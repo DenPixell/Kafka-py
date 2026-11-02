@@ -1,0 +1,42 @@
+# Корень монорепозитория: виртуальный uv-workspace без собственного пакета.
+# Здесь общие инструменты разработки и их настройки, код живёт в libs/ и services/.
+[tool.uv.workspace]
+members = ["libs/*"]
+
+[dependency-groups]
+dev = [
+    "mypy>=2.4.1",
+    "pytest>=9.2.0",
+    "ruff>=0.17.3",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E", "W",   # pycodestyle
+    "F",        # pyflakes
+    "I",        # сортировка импортов
+    "UP",       # современный синтаксис
+    "B",        # частые ошибки
+    "SIM",      # упрощения
+    "ASYNC",    # ошибки в async-коде
+    "DTZ",      # datetime без часового пояса
+    "RUF",
+]
+# Комментарии и докстринги пишем по-русски: кириллица здесь не опечатка.
+ignore = ["RUF001", "RUF002", "RUF003"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["contracts"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+plugins = ["pydantic.mypy"]
+
+[tool.pytest.ini_options]
+testpaths = ["libs"]
+addopts = "--import-mode=importlib"

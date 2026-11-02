@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Секреты и локальные настройки
+.env
+
+# IDE и ОС
+.idea/
+.vscode/
+.DS_Store
+
+# Документация пока не публикуется
+docs/
+README.md
+AGENTS.md

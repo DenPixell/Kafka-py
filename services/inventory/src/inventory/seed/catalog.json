@@ -1,0 +1,212 @@
+{
+  "categories": [
+    {
+      "slug": "iphone",
+      "name": "iPhone"
+    },
+    {
+      "slug": "ipad",
+      "name": "iPad"
+    },
+    {
+      "slug": "mac",
+      "name": "MacBook"
+    }
+  ],
+  "products": [
+    {
+      "slug": "iphone-17",
+      "category": "iphone",
+      "name": "iPhone 17",
+      "screens": {
+        "6.3": 79990
+      },
+      "storage": {
+        "256": 0,
+        "512": 20000
+      }
+    },
+    {
+      "slug": "iphone-17-pro",
+      "category": "iphone",
+      "name": "iPhone 17 Pro",
+      "screens": {
+        "6.3": 109990
+      },
+      "storage": {
+        "256": 0,
+        "512": 20000,
+        "1024": 40000
+      }
+    },
+    {
+      "slug": "iphone-17-pro-max",
+      "category": "iphone",
+      "name": "iPhone 17 Pro Max",
+      "screens": {
+        "6.9": 124990
+      },
+      "storage": {
+        "256": 0,
+        "512": 20000,
+        "1024": 40000,
+        "2048": 80000
+      }
+    },
+    {
+      "slug": "iphone-18-pro",
+      "category": "iphone",
+      "name": "iPhone 18 Pro",
+      "screens": {
+        "6.3": 119990
+      },
+      "storage": {
+        "256": 0,
+        "512": 20000,
+        "1024": 40000,
+        "2048": 80000
+      }
+    },
+    {
+      "slug": "iphone-18-pro-max",
+      "category": "iphone",
+      "name": "iPhone 18 Pro Max",
+      "screens": {
+        "6.9": 134990
+      },
+      "storage": {
+        "256": 0,
+        "512": 20000,
+        "1024": 40000,
+        "2048": 80000
+      },
+      "stock": 2
+    },
+    {
+      "slug": "ipad-10",
+      "category": "ipad",
+      "name": "iPad (10-го поколения)",
+      "screens": {
+        "10.9": 34990
+      },
+      "storage": {
+        "64": 0,
+        "256": 15000
+      }
+    },
+    {
+      "slug": "ipad-a16",
+      "category": "ipad",
+      "name": "iPad (A16)",
+      "screens": {
+        "11": 39990
+      },
+      "storage": {
+        "128": 0,
+        "256": 10000,
+        "512": 30000
+      }
+    },
+    {
+      "slug": "ipad-pro-m4",
+      "category": "ipad",
+      "name": "iPad Pro (M4)",
+      "screens": {
+        "11": 99990,
+        "13": 129990
+      },
+      "storage": {
+        "256": 0,
+        "512": 20000,
+        "1024": 60000,
+        "2048": 100000
+      }
+    },
+    {
+      "slug": "ipad-pro-m5",
+      "category": "ipad",
+      "name": "iPad Pro (M5)",
+      "screens": {
+        "11": 109990,
+        "13": 139990
+      },
+      "storage": {
+        "256": 0,
+        "512": 20000,
+        "1024": 60000,
+        "2048": 100000
+      }
+    },
+    {
+      "slug": "macbook-neo",
+      "category": "mac",
+      "name": "MacBook Neo",
+      "screens": {
+        "13": 69990
+      },
+      "storage": {
+        "256": 0,
+        "512": 10000
+      },
+      "notes": {
+        "512": "с Touch ID"
+      }
+    },
+    {
+      "slug": "macbook-air-m5",
+      "category": "mac",
+      "name": "MacBook Air (M5)",
+      "screens": {
+        "13": 119990,
+        "15": 144990
+      },
+      "storage": {
+        "512": 0,
+        "1024": 20000,
+        "2048": 60000,
+        "4096": 120000
+      }
+    },
+    {
+      "slug": "macbook-pro-m5",
+      "category": "mac",
+      "name": "MacBook Pro (M5)",
+      "screens": {
+        "14": 179990
+      },
+      "storage": {
+        "512": 0,
+        "1024": 20000
+      }
+    },
+    {
+      "slug": "macbook-pro-m5-pro",
+      "category": "mac",
+      "name": "MacBook Pro (M5 Pro)",
+      "screens": {
+        "14": 239990,
+        "16": 289990
+      },
+      "storage": {
+        "1024": 0,
+        "2048": 40000,
+        "4096": 100000
+      }
+    },
+    {
+      "slug": "macbook-pro-m5-max",
+      "category": "mac",
+      "name": "MacBook Pro (M5 Max)",
+      "screens": {
+        "14": 379990,
+        "16": 409990
+      },
+      "storage": {
+        "2048": 0,
+        "4096": 60000,
+        "8192": 180000
+      },
+      "stock": 1
+    }
+  ]
+}

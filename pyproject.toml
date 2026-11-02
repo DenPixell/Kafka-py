@@ -41,6 +41,16 @@ strict = true
 plugins = ["pydantic.mypy"]
 # Миграции генерирует Alembic, а env.py в каждом сервисе называется одинаково.
 exclude = ["/migrations/"]
+# Корни исходников всех пакетов. Тесты сервисов — пакеты services.<имя>.tests,
+# поэтому одинаковые имена файлов (conftest.py, test_api.py) не конфликтуют.
+explicit_package_bases = true
+mypy_path = [
+    "libs/contracts/src",
+    "libs/outbox/src",
+    "services/inventory/src",
+    "services/order/src",
+    ".",
+]
 
 # У этих библиотек нет аннотаций типов.
 [[tool.mypy.overrides]]
@@ -50,6 +60,8 @@ ignore_missing_imports = true
 [tool.pytest.ini_options]
 testpaths = ["libs", "services"]
 addopts = "--import-mode=importlib"
+consider_namespace_packages = true
+pythonpath = ["."]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 markers = ["integration: тесты с настоящими PostgreSQL или Kafka в Docker"]

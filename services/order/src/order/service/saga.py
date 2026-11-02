@@ -56,6 +56,10 @@ class SagaService:
                         total_kopecks=event.total_kopecks,
                         delivery_country=order.delivery_country,
                     ),
+                    # Ключ — покупатель, а не заказ: все проверки одного покупателя
+                    # попадут в одну партицию и пройдут в том порядке, в каком созданы.
+                    # Иначе правило частых заказов срабатывало бы на случайном заказе.
+                    key=order.user_id,
                 )
             case StockReservationFailed():
                 order.reject_out_of_stock()

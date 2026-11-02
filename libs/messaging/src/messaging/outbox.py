@@ -34,12 +34,13 @@ class OutboxWriter:
         self._session = session
         self._table = table
 
-    async def put(self, topic: str, message: Message) -> None:
+    async def put(self, topic: str, message: Message, key: str | None = None) -> None:
+        """key — ключ партиции. По умолчанию order_id: сообщения одного заказа идут по порядку."""
         await self._session.execute(
             insert(self._table).values(
                 message_id=message.message_id,
                 topic=topic,
-                key=str(message.order_id),
+                key=key or str(message.order_id),
                 payload=message.model_dump(mode="json"),
             )
         )

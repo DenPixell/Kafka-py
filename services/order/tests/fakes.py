@@ -25,6 +25,8 @@ class FakeOrderRepository:
 class FakeOutbox:
     def __init__(self) -> None:
         self.messages: list[tuple[str, Message]] = []
+        self.keys: list[str | None] = []
 
-    async def put(self, topic: str, message: Message) -> None:
+    async def put(self, topic: str, message: Message, key: str | None = None) -> None:
         self.messages.append((topic, message))
+        self.keys.append(key)

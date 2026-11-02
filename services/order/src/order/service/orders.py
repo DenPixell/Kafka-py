@@ -16,7 +16,7 @@ class OrderRepository(Protocol):
 
 
 class Outbox(Protocol):
-    async def put(self, topic: str, message: Message) -> None: ...
+    async def put(self, topic: str, message: Message, key: str | None = None) -> None: ...
 
 
 class OrderService:

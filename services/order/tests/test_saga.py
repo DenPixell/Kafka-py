@@ -50,6 +50,7 @@ async def test_reserved_order_goes_to_fraud_check(
     assert repository.updated == [OrderStatus.FRAUD_CHECK]
     [(topic, command)] = outbox.messages
     assert topic == ANTIFRAUD_COMMANDS
+    assert outbox.keys == ["anna"]
     assert command == CheckOrder(
         message_id=command.message_id,
         occurred_at=command.occurred_at,

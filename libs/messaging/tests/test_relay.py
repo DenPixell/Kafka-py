@@ -106,3 +106,15 @@ async def test_failed_publish_keeps_messages_for_next_attempt(
     assert await unpublished_count(session_factory) == 1
     publisher = RecordingPublisher()
     assert await OutboxRelay(session_factory, outbox_table, publisher).publish_batch() == 1
+
+
+async def test_custom_partition_key(session_factory: async_sessionmaker[AsyncSession]) -> None:
+    async with session_factory.begin() as session:
+        await OutboxWriter(session, outbox_table).put(
+            "antifraud.commands", make_command(), key="anna"
+        )
+    publisher = RecordingPublisher()
+
+    await OutboxRelay(session_factory, outbox_table, publisher).publish_batch()
+
+    assert [key for _, key, _ in publisher.sent] == ["anna"]

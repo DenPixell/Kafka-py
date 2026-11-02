@@ -646,7 +646,9 @@ source = { editable = "services/inventory" }
 dependencies = [
     { name = "alembic" },
     { name = "asyncpg" },
+    { name = "contracts" },
     { name = "fastapi" },
+    { name = "messaging" },
     { name = "pydantic-settings" },
     { name = "sqlalchemy", extra = ["asyncio"] },
     { name = "uvicorn", extra = ["standard"] },
@@ -656,7 +658,9 @@ dependencies = [
 requires-dist = [
     { name = "alembic", specifier = ">=1.20.1" },
     { name = "asyncpg", specifier = ">=0.32.0" },
+    { name = "contracts", editable = "libs/contracts" },
     { name = "fastapi", specifier = ">=0.162.0" },
+    { name = "messaging", editable = "libs/messaging" },
     { name = "pydantic-settings", specifier = ">=2.16.2" },
     { name = "sqlalchemy", extras = ["asyncio"], specifier = ">=2.1.6" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.54.0" },

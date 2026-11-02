@@ -12,3 +12,4 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="INVENTORY_")
 
     database_url: PostgresDsn
+    kafka_bootstrap_servers: str = "localhost:9092"

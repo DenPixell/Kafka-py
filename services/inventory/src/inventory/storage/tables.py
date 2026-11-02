@@ -4,6 +4,7 @@ from sqlalchemy import (
     BigInteger,
     CheckConstraint,
     Column,
+    DateTime,
     ForeignKey,
     Integer,
     MetaData,
@@ -11,7 +12,10 @@ from sqlalchemy import (
     Table,
     Text,
     UniqueConstraint,
+    Uuid,
 )
+
+from messaging import define_outbox_table, define_processed_messages_table
 
 metadata = MetaData(
     naming_convention={
@@ -65,3 +69,19 @@ stock = Table(
     CheckConstraint("quantity >= 0", name="quantity_non_negative"),
     CheckConstraint("reserved >= 0 AND reserved <= quantity", name="reserved_within_quantity"),
 )
+
+# Что отложено под какой заказ: по этим строкам снимается резерв при компенсации.
+reservations = Table(
+    "reservations",
+    metadata,
+    Column("order_id", Uuid, primary_key=True),
+    Column("sku", Text, ForeignKey("product_variants.sku"), primary_key=True),
+    Column("quantity", Integer, nullable=False),
+    # Цена на момент резерва: если каталог подорожает, сумма заказа не изменится.
+    Column("unit_price_kopecks", BigInteger, nullable=False),
+    Column("released_at", DateTime(timezone=True)),
+    CheckConstraint("quantity > 0", name="quantity_positive"),
+)
+
+outbox = define_outbox_table(metadata)
+processed_messages = define_processed_messages_table(metadata)

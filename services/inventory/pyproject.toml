@@ -6,7 +6,9 @@ requires-python = ">=3.12"
 dependencies = [
     "alembic>=1.20.1",
     "asyncpg>=0.32.0",
+    "contracts",
     "fastapi>=0.162.0",
+    "messaging",
     "pydantic-settings>=2.16.2",
     "sqlalchemy[asyncio]>=2.1.6",
     "uvicorn[standard]>=0.54.0",
@@ -15,3 +17,7 @@ dependencies = [
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.uv.sources]
+contracts = { workspace = true }
+messaging = { workspace = true }

@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Annotated
 from uuid import UUID
 
-from pydantic import BaseModel, Field, StringConstraints, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StringConstraints, field_validator
 
 from order.domain.order import CancelReason, Order, OrderItem, OrderStatus
 
@@ -20,6 +20,9 @@ class OrderItemIn(BaseModel):
 
 class CreateOrderIn(BaseModel):
     # user_id здесь нет специально: он приходит только из заголовка X-User-Id.
+    # extra="forbid": попытка передать его в теле — ошибка, а не тихое игнорирование.
+    model_config = ConfigDict(extra="forbid")
+
     items: list[OrderItemIn] = Field(min_length=1, max_length=20)
     delivery_country: CountryCode
 

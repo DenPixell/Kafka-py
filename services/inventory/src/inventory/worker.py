@@ -34,7 +34,7 @@ async def main() -> None:
     await publisher.start()
     try:
         await asyncio.gather(
-            consumer.run(INVENTORY_COMMANDS, "inventory", settings.kafka_bootstrap_servers),
+            consumer.run([INVENTORY_COMMANDS], "inventory", settings.kafka_bootstrap_servers),
             OutboxRelay(session_factory, outbox, publisher).run(),
         )
     finally:

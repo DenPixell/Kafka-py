@@ -3,18 +3,24 @@
 import logging
 
 from contracts import (
+    AntifraudEvent,
     CheckOrder,
+    FraudCheckFailed,
+    FraudCheckPassed,
     InventoryEvent,
+    ReleaseStock,
     StockReleased,
     StockReservationFailed,
     StockReserved,
 )
-from contracts.topics import ANTIFRAUD_COMMANDS
+from contracts.topics import ANTIFRAUD_COMMANDS, INVENTORY_COMMANDS
 from order.domain.errors import InvalidTransitionError
 from order.domain.order import Order
 from order.service.orders import OrderRepository, Outbox
 
 logger = logging.getLogger(__name__)
+
+SagaEvent = InventoryEvent | AntifraudEvent
 
 
 class SagaService:
@@ -22,7 +28,7 @@ class SagaService:
         self._orders = orders
         self._outbox = outbox
 
-    async def on_inventory_event(self, event: InventoryEvent) -> None:
+    async def on_event(self, event: SagaEvent) -> None:
         order = await self._orders.get(event.order_id, for_update=True)
         if order is None:
             logger.warning("Событие %s для неизвестного заказа %s", event.type, event.order_id)
@@ -37,7 +43,7 @@ class SagaService:
             return
         await self._orders.update(order)
 
-    async def _apply(self, order: Order, event: InventoryEvent) -> None:
+    async def _apply(self, order: Order, event: SagaEvent) -> None:
         match event:
             case StockReserved():
                 order.mark_reserved(event.total_kopecks)
@@ -53,5 +59,12 @@ class SagaService:
                 )
             case StockReservationFailed():
                 order.reject_out_of_stock()
+            case FraudCheckPassed():
+                order.confirm()
+            case FraudCheckFailed():
+                logger.info("Заказ %s отклонён антифродом: %s", order.id, ", ".join(event.reasons))
+                order.reject_by_fraud()
+                # Компенсация: товар уже отложен, его нужно вернуть на склад.
+                await self._outbox.put(INVENTORY_COMMANDS, ReleaseStock(order_id=order.id))
             case StockReleased():
                 order.mark_released()

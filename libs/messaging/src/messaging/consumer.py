@@ -59,9 +59,9 @@ class IdempotentConsumer:
             await self._handler(session, value)
         return True
 
-    async def run(self, topic: str, group_id: str, bootstrap_servers: str) -> None:
+    async def run(self, topics: list[str], group_id: str, bootstrap_servers: str) -> None:
         consumer = AIOKafkaConsumer(
-            topic,
+            *topics,
             group_id=group_id,
             bootstrap_servers=bootstrap_servers,
             # Оффсет коммитим сами и только после коммита в БД.

@@ -12,7 +12,7 @@ from testcontainers.community.postgres import PostgresContainer
 
 from contracts import ReserveStock
 from messaging import OutboxWriter
-from order.domain.order import OrderItem, OrderStatus
+from order.domain.order import CancelReason, OrderItem, OrderStatus
 from order.service.orders import OrderService
 from order.storage.db import create_engine, create_session_factory
 from order.storage.order_repository import PostgresOrderRepository
@@ -90,3 +90,26 @@ async def test_rollback_drops_both_order_and_command(
 
     assert await count(session_factory, orders) == orders_before
     assert await count(session_factory, outbox) == outbox_before
+
+
+async def test_update_persists_saga_progress(
+    session_factory: async_sessionmaker[AsyncSession],
+) -> None:
+    async with session_factory.begin() as session:
+        placed = await make_service(session).place_order("anna", "RU", ITEMS)
+
+    async with session_factory.begin() as session:
+        repository = PostgresOrderRepository(session)
+        order = await repository.get(placed.id, for_update=True)
+        assert order is not None
+        order.mark_reserved(total_kopecks=15_998_000)
+        order.reject_by_fraud()
+        await repository.update(order)
+
+    async with session_factory() as session:
+        loaded = await PostgresOrderRepository(session).get(placed.id)
+
+    assert loaded is not None
+    assert loaded.status is OrderStatus.CANCELLING
+    assert loaded.total_kopecks == 15_998_000
+    assert loaded.cancel_reason is CancelReason.FRAUD

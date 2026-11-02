@@ -316,8 +316,10 @@
           "name": "Серебристый",
           "hex": "#e2e3e4",
           "images": [
-            "ipad-10th-gen-finish-silver-2022.jpg",
-            "ipad-2022-hero-silver-wifi-select.jpg"
+            "ipad-2022-hero-silver-wifi-select.jpg",
+            "ipad-model-unselect-gallery-1-202503.jpg",
+            "ipad-model-unselect-gallery-2-202503.jpg",
+            "ipad-model-unselect-gallery-3-202503.jpg"
           ]
         },
         {
@@ -325,8 +327,10 @@
           "name": "Голубой",
           "hex": "#a7c4e1",
           "images": [
-            "ipad-10th-gen-finish-blue-2022.jpg",
-            "ipad-2022-hero-blue-wifi-select.jpg"
+            "ipad-2022-hero-blue-wifi-select.jpg",
+            "ipad-model-unselect-gallery-1-202503.jpg",
+            "ipad-model-unselect-gallery-2-202503.jpg",
+            "ipad-model-unselect-gallery-3-202503.jpg"
           ]
         },
         {
@@ -334,8 +338,10 @@
           "name": "Розовый",
           "hex": "#f1c8cb",
           "images": [
-            "ipad-10th-gen-finish-pink-2022.jpg",
-            "ipad-2022-hero-pink-wifi-select.jpg"
+            "ipad-2022-hero-pink-wifi-select.jpg",
+            "ipad-model-unselect-gallery-1-202503.jpg",
+            "ipad-model-unselect-gallery-2-202503.jpg",
+            "ipad-model-unselect-gallery-3-202503.jpg"
           ]
         },
         {
@@ -343,8 +349,10 @@
           "name": "Жёлтый",
           "hex": "#f1dd8c",
           "images": [
-            "ipad-10th-gen-finish-yellow-2022.jpg",
-            "ipad-2022-hero-yellow-wifi-select.jpg"
+            "ipad-2022-hero-yellow-wifi-select.jpg",
+            "ipad-model-unselect-gallery-1-202503.jpg",
+            "ipad-model-unselect-gallery-2-202503.jpg",
+            "ipad-model-unselect-gallery-3-202503.jpg"
           ]
         }
       ]
@@ -638,7 +646,6 @@
             "mbp14-spaceblack-select-202410.jpg",
             "mbp16-spaceblack-select-202410.jpg",
             "mbp14-spaceblack-gallery1-202410.jpg",
-            "mbp14-spaceblack-cto-hero-202410.jpg",
             "mac-macbook-pro-size-unselect-202610-gallery-1.jpg"
           ]
         },
@@ -650,7 +657,6 @@
             "mbp14-silver-select-202410.jpg",
             "mbp16-silver-select-202410.jpg",
             "mbp14-silver-gallery1-202410.jpg",
-            "mbp14-silver-cto-hero-202410.jpg",
             "mac-macbook-pro-size-unselect-202610-gallery-1.jpg"
           ]
         }
@@ -679,7 +685,6 @@
             "mbp14-spaceblack-select-202410.jpg",
             "mbp16-spaceblack-select-202410.jpg",
             "mbp14-spaceblack-gallery1-202410.jpg",
-            "mbp14-spaceblack-cto-hero-202410.jpg",
             "mac-macbook-pro-size-unselect-202610-gallery-1.jpg"
           ]
         },
@@ -691,7 +696,6 @@
             "mbp14-silver-select-202410.jpg",
             "mbp16-silver-select-202410.jpg",
             "mbp14-silver-gallery1-202410.jpg",
-            "mbp14-silver-cto-hero-202410.jpg",
             "mac-macbook-pro-size-unselect-202610-gallery-1.jpg"
           ]
         }
@@ -721,7 +725,6 @@
             "mbp14-spaceblack-select-202410.jpg",
             "mbp16-spaceblack-select-202410.jpg",
             "mbp14-spaceblack-gallery1-202410.jpg",
-            "mbp14-spaceblack-cto-hero-202410.jpg",
             "mac-macbook-pro-size-unselect-202610-gallery-1.jpg"
           ]
         },
@@ -733,7 +736,6 @@
             "mbp14-silver-select-202410.jpg",
             "mbp16-silver-select-202410.jpg",
             "mbp14-silver-gallery1-202410.jpg",
-            "mbp14-silver-cto-hero-202410.jpg",
             "mac-macbook-pro-size-unselect-202610-gallery-1.jpg"
           ]
         }

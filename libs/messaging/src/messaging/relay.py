@@ -5,7 +5,7 @@ import logging
 from sqlalchemy import Table, func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
-from outbox.publisher import Publisher
+from messaging.publisher import Publisher
 
 logger = logging.getLogger(__name__)
 

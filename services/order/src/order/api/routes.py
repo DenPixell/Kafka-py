@@ -4,11 +4,11 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, Header, Request, status
 
+from messaging import OutboxWriter
 from order.api.schemas import CreateOrderIn, OrderOut
 from order.service.orders import OrderService
 from order.storage.order_repository import PostgresOrderRepository
 from order.storage.tables import outbox
-from outbox import OutboxWriter
 
 router = APIRouter()
 

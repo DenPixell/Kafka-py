@@ -14,8 +14,8 @@ from sqlalchemy import (
     Uuid,
 )
 
+from messaging import define_outbox_table
 from order.domain.order import CancelReason, OrderStatus
-from outbox import define_outbox_table
 
 metadata = MetaData(
     naming_convention={

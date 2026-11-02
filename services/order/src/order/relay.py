@@ -6,10 +6,10 @@
 import asyncio
 import logging
 
+from messaging import KafkaPublisher, OutboxRelay
 from order.config import Settings
 from order.storage.db import create_engine, create_session_factory
 from order.storage.tables import outbox
-from outbox import KafkaPublisher, OutboxRelay
 
 
 async def main() -> None:

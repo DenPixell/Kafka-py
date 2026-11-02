@@ -1,7 +1,7 @@
 [project]
-name = "outbox"
+name = "messaging"
 version = "0.1.0"
-description = "Transactional Outbox: запись сообщений в БД и их публикация в Kafka"
+description = "Надёжный обмен сообщениями через Kafka: outbox, relay и идемпотентный консьюмер"
 requires-python = ">=3.12"
 dependencies = [
     "aiokafka>=0.15.0",

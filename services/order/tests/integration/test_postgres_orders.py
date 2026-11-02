@@ -11,12 +11,12 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from testcontainers.community.postgres import PostgresContainer
 
 from contracts import ReserveStock
+from messaging import OutboxWriter
 from order.domain.order import OrderItem, OrderStatus
 from order.service.orders import OrderService
 from order.storage.db import create_engine, create_session_factory
 from order.storage.order_repository import PostgresOrderRepository
 from order.storage.tables import orders, outbox
-from outbox import OutboxWriter
 
 pytestmark = pytest.mark.integration
 

@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 from testcontainers.community.postgres import PostgresContainer
 
 from contracts import OrderLine, ReserveStock
-from outbox import OutboxRelay, OutboxWriter, define_outbox_table
+from messaging import OutboxRelay, OutboxWriter, define_outbox_table
 
 pytestmark = pytest.mark.integration
 

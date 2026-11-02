@@ -1,18 +1,10 @@
-import re
-
 import httpx
 
 from .backend import FakeBackend
 
 
-def radio(html: str, sku: str) -> str:
-    match = re.search(rf'<input type="radio"[^>]*value="{sku}"[^>]*>', html)
-    assert match, sku
-    return match.group(0)
-
-
 async def add_neo_512(client: httpx.AsyncClient) -> None:
-    await client.post("/cart/add", data={"sku": "macbook-neo-512"})
+    await client.post("/cart/add", data={"sku": "macbook-neo-512-silver"})
 
 
 async def test_home_lists_products_with_formatted_price(client: httpx.AsyncClient) -> None:
@@ -30,15 +22,41 @@ async def test_unknown_category_is_404(client: httpx.AsyncClient) -> None:
     assert "Страница не найдена" in response.text
 
 
-async def test_product_page_marks_unavailable_and_preselects_available(
+async def test_product_page_preselects_first_available_configuration(
     client: httpx.AsyncClient,
 ) -> None:
     text = (await client.get("/products/macbook-neo")).text
 
-    assert "disabled" in radio(text, "macbook-neo-256")
-    assert "checked" in radio(text, "macbook-neo-512")
-    assert "disabled" not in radio(text, "macbook-neo-512")
+    # Серебристый 256 ГБ закончился, поэтому выбран первый в наличии — серебристый 512.
+    assert 'name="sku" value="macbook-neo-512-silver"' in text
     assert "с Touch ID" in text
+    assert "neo-silver-1.jpg" in text
+
+
+async def test_product_page_respects_requested_color(client: httpx.AsyncClient) -> None:
+    text = (await client.get("/products/macbook-neo?color=citrus")).text
+
+    assert 'name="sku" value="macbook-neo-256-citrus"' in text
+    assert "neo-citrus-1.jpg" in text
+    assert "neo-silver-1.jpg" not in text
+
+
+async def test_configure_fragment_is_a_block_not_a_page(client: httpx.AsyncClient) -> None:
+    response = await client.get(
+        "/products/macbook-neo/configure", params={"color": "citrus", "storage": "512"}
+    )
+
+    assert response.status_code == 200
+    assert response.text.lstrip().startswith('<article class="config config--row"')
+    assert "Нет в наличии" in response.text
+    assert "disabled" in response.text
+
+
+async def test_catalog_filter_by_model(client: httpx.AsyncClient) -> None:
+    text = (await client.get("/catalog/mac?model=macbook-neo")).text
+
+    assert 'class="pill is-active" href="/catalog/mac?model=macbook-neo"' in text
+    assert text.count('class="config config--row"') == 1
 
 
 async def test_cart_keeps_items_between_requests(client: httpx.AsyncClient) -> None:
@@ -47,14 +65,14 @@ async def test_cart_keeps_items_between_requests(client: httpx.AsyncClient) -> N
 
     text = (await client.get("/cart")).text
 
-    assert 'value="2"' in text
+    assert 'aria-label="Количество">2<' in text
     assert "159 980 ₽" in text
 
 
 async def test_quantity_zero_removes_line(client: httpx.AsyncClient) -> None:
     await add_neo_512(client)
 
-    await client.post("/cart/update", data={"sku": "macbook-neo-512", "quantity": "0"})
+    await client.post("/cart/update", data={"sku": "macbook-neo-512-silver", "quantity": "0"})
 
     assert "В корзине пока пусто" in (await client.get("/cart")).text
 
@@ -70,7 +88,10 @@ async def test_checkout_creates_order_for_current_buyer_and_clears_cart(
     assert response.status_code == 303
     assert response.headers["location"].startswith("/orders/")
     assert backend.created == [
-        ("vera", {"items": [{"sku": "macbook-neo-512", "quantity": 1}], "delivery_country": "AM"})
+        (
+            "vera",
+            {"items": [{"sku": "macbook-neo-512-silver", "quantity": 1}], "delivery_country": "AM"},
+        )
     ]
     assert "В корзине пока пусто" in (await client.get("/cart")).text
 

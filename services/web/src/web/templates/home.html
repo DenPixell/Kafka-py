@@ -1,19 +1,54 @@
 {% extends "base.html" %}
-{% from "_product_card.html" import product_card %}
 {% block content %}
 <section class="hero">
-  <h1>Техника, которую мы бережно проверяем</h1>
-  <p class="muted">Каждый заказ проходит резерв на складе и проверку безопасности. Статус обновляется на странице заказа в реальном времени.</p>
-</section>
-{% for category, products in sections %}
-  <section class="section">
-    <div class="section__head">
-      <h2>{{ category.name }}</h2>
-      <a class="link" href="/catalog/{{ category.slug }}">Все модели</a>
+  <div class="container hero__row">
+    <div class="hero__text">
+      <h1>Техника Apple,<br>которую мы<br>проверяем дважды</h1>
+      <p>Каждый заказ проходит резерв на складе и проверку безопасности. Статус обновляется в реальном времени.</p>
+      <a class="button button--primary" href="/catalog/iphone">В каталог
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      </a>
     </div>
-    <div class="grid">
-      {% for product in products %}{{ product_card(product) }}{% endfor %}
+    <img class="hero__image" src="{{ url_for('static', path='products/iphone-18-pro-finish-select-burgundy-202609.jpg') }}" alt="iPhone 18 Pro, бордовый" width="1000" height="1000">
+  </div>
+</section>
+
+<div class="container">
+  <section class="section">
+    <h2 class="section__title">Категории</h2>
+    <div class="tiles">
+      {% for category, products in sections %}
+        {% set first = products[0] %}
+        <a class="tile" href="/catalog/{{ category.slug }}">
+          <span class="tile__text">
+            <span class="tile__name">{{ category.name }}</span>
+            <span class="tile__meta">{{ products | length }} модел{{ 'ь' if products | length == 1 else ('и' if products | length < 5 else 'ей') }} · от {{ products | map(attribute='min_price_kopecks') | min | money }}</span>
+          </span>
+          <img src="{{ url_for('static', path='products/' ~ first.colors[0].images[0]) }}" alt="" loading="lazy" width="1000" height="1000">
+        </a>
+      {% endfor %}
     </div>
   </section>
-{% endfor %}
+
+  {% for category, products in sections %}
+    <section class="section">
+      <div class="section__head">
+        <h2 class="section__title">{{ category.name }}</h2>
+        <a class="link" href="/catalog/{{ category.slug }}">Все модели →</a>
+      </div>
+      <div class="cards">
+        {% for product in products %}
+          <a class="card" href="/products/{{ product.slug }}">
+            <img class="card__image" src="{{ url_for('static', path='products/' ~ product.colors[0].images[0]) }}" alt="{{ product.name }}" loading="lazy" width="1000" height="1000">
+            <span class="card__name">{{ product.name }}</span>
+            <span class="card__dots" aria-label="{{ product.colors | length }} цвета">
+              {% for color in product.colors %}<span class="dot" style="--swatch: {{ color.hex }}" title="{{ color.name }}"></span>{% endfor %}
+            </span>
+            <span class="card__price">от {{ product.min_price_kopecks | money }}</span>
+          </a>
+        {% endfor %}
+      </div>
+    </section>
+  {% endfor %}
+</div>
 {% endblock %}

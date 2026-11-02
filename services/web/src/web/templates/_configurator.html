@@ -1,0 +1,80 @@
+{#
+  Блок товара с выбором конфигурации. Используется в каталоге (layout=row) и на
+  странице товара (layout=page). Кнопки выбора — обычные ссылки: без JavaScript
+  они открывают страницу товара, с HTMX заменяют только этот блок.
+#}
+{% from "_carousel.html" import carousel with context %}
+{% set p = config.product %}
+{% set v = config.variant %}
+{% macro choose(option) -%}
+  href="/products/{{ p.slug }}?{{ option.selection.query() }}"
+  hx-get="/products/{{ p.slug }}/configure?{{ option.selection.query() }}&layout={{ layout }}"
+  hx-target="closest .config" hx-swap="outerHTML"
+  {% if layout == "page" %}hx-push-url="/products/{{ p.slug }}?{{ option.selection.query() }}"{% endif %}
+  {% if option.selected %}aria-current="true"{% endif %}
+{%- endmacro %}
+<article class="config config--{{ layout }}" id="config-{{ p.slug }}">
+  <div class="config__media">
+    {{ carousel(config.color.images, p.name ~ ", " ~ config.color.name, layout) }}
+  </div>
+
+  <div class="config__info">
+    {% if layout == "row" %}
+      <h2 class="config__title"><a href="/products/{{ p.slug }}?{{ config.selection.query() }}">{{ p.name }}</a></h2>
+    {% else %}
+      <h1 class="config__title">{{ p.name }}</h1>
+    {% endif %}
+    <p class="config__description">{{ p.description }}</p>
+
+    {% if config.screens | length > 1 %}
+      <div class="option-group">
+        <span class="option-group__label">Диагональ</span>
+        <div class="chips">
+          {% for o in config.screens %}
+            <a class="chip {% if o.selected %}is-selected{% endif %} {% if not o.in_stock %}is-muted{% endif %}" {{ choose(o) }}>{{ o.label }}</a>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="option-group">
+      <span class="option-group__label">Объём памяти</span>
+      <div class="chips">
+        {% for o in config.storages %}
+          <a class="chip {% if o.selected %}is-selected{% endif %} {% if not o.in_stock %}is-muted{% endif %}" {{ choose(o) }}>{{ o.label }}</a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="option-group">
+      <span class="option-group__label">Цвет: <strong>{{ config.color.name }}</strong></span>
+      <div class="swatches">
+        {% for o in config.colors %}
+          <a class="swatch {% if o.selected %}is-selected{% endif %} {% if not o.in_stock %}is-muted{% endif %}"
+             style="--swatch: {{ o.hex }}" title="{{ o.label }}" aria-label="{{ o.label }}" {{ choose(o) }}></a>
+        {% endfor %}
+      </div>
+    </div>
+
+    {% if v.note %}<p class="config__note">{{ v.note }}</p>{% endif %}
+  </div>
+
+  <div class="config__buy">
+    <p class="price">{{ v.price_kopecks | money }}</p>
+    {% if v.in_stock %}
+      <span class="badge badge--success">В наличии{% if v.available <= 3 %}: {{ v.available }} шт.{% endif %}</span>
+    {% else %}
+      <span class="badge badge--muted">Нет в наличии</span>
+    {% endif %}
+    <form method="post" action="/cart/add">
+      <input type="hidden" name="sku" value="{{ v.sku }}">
+      <button class="button button--primary button--wide" type="submit" {% if not v.in_stock %}disabled{% endif %}>
+        В корзину
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+      </button>
+    </form>
+    {% if layout == "row" %}
+      <a class="button button--outline button--wide" href="/products/{{ p.slug }}?{{ config.selection.query() }}">Подробнее</a>
+    {% endif %}
+  </div>
+</article>

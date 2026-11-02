@@ -4,43 +4,61 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Техносад{% endblock %} — учебный магазин</title>
-  <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Unbounded:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}?v={{ asset_version }}">
   <script src="{{ url_for('static', path='htmx.min.js') }}" defer></script>
+  <script src="{{ url_for('static', path='carousel.js') }}?v={{ asset_version }}" defer></script>
 </head>
 <body>
+  <div class="topbar">
+    <div class="container topbar__row">
+      <span class="topbar__note">Учебный проект: заказы не оплачиваются и не доставляются</span>
+      <form class="buyer" method="post" action="/buyer">
+        <label for="buyer">Покупатель</label>
+        <select id="buyer" name="buyer" onchange="this.form.submit()">
+          {% for id, name in buyers.items() %}
+            <option value="{{ id }}" {% if id == buyer %}selected{% endif %}>{{ name }}</option>
+          {% endfor %}
+        </select>
+        <input type="hidden" name="next_url" value="{{ request.url.path }}">
+        <noscript><button class="chip" type="submit">Выбрать</button></noscript>
+      </form>
+    </div>
+  </div>
+
   <header class="header">
     <div class="container header__row">
-      <a class="brand" href="/">Техносад</a>
+      <a class="logo" href="/">техносад</a>
       <nav class="nav" aria-label="Каталог">
         <a href="/catalog/iphone">iPhone</a>
         <a href="/catalog/ipad">iPad</a>
-        <a href="/catalog/mac">MacBook</a>
+        <a href="/catalog/mac">Mac</a>
       </nav>
       <div class="header__actions">
-        <a class="nav-link" href="/orders">Заказы</a>
-        <a class="nav-link" href="/cart">Корзина{% if cart_count %} <span class="count">{{ cart_count }}</span>{% endif %}</a>
-        <form class="buyer" method="post" action="/buyer">
-          <label for="buyer">Покупатель</label>
-          <select id="buyer" name="buyer" onchange="this.form.submit()">
-            {% for id, name in buyers.items() %}
-              <option value="{{ id }}" {% if id == buyer %}selected{% endif %}>{{ name }}</option>
-            {% endfor %}
-          </select>
-          <input type="hidden" name="next_url" value="{{ request.url.path }}">
-          <noscript><button class="button button--small" type="submit">Выбрать</button></noscript>
-        </form>
+        <a class="icon-link" href="/orders">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 7h12M8 12h12M8 17h12M4 7h.01M4 12h.01M4 17h.01"/></svg>
+          <span>Заказы</span>
+        </a>
+        <a class="icon-link" href="/cart">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+          <span>Корзина</span>
+          {% if cart_count %}<span class="count">{{ cart_count }}</span>{% endif %}
+        </a>
       </div>
     </div>
   </header>
 
-  <main class="container main">
+  <main class="main">
     {% block content %}{% endblock %}
   </main>
 
   <footer class="footer">
-    <div class="container">
-      Учебный проект, не магазин: заказы не оплачиваются и не доставляются.
-      Не связан с Apple Inc., названия моделей используются только для описания товара.
+    <div class="container footer__row">
+      <span class="logo logo--small">техносад</span>
+      <span>Учебный проект по Kafka на Python. Не магазин и не связан с Apple Inc.: названия
+        моделей и фото используются только для описания товара.</span>
     </div>
   </footer>
 </body>

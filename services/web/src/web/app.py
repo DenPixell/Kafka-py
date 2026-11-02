@@ -3,6 +3,7 @@
 Запуск: uvicorn web.app:create_app --factory
 """
 
+import hashlib
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -25,8 +26,18 @@ from web.routes import render, router
 HERE = Path(__file__).parent
 
 
+def asset_version() -> str:
+    """Короткий хеш стилей и скриптов. Добавляется к их адресу (?v=...), чтобы после
+    обновления браузер не показывал старую версию из кеша."""
+    digest = hashlib.sha256()
+    for name in ("styles.css", "carousel.js"):
+        digest.update((HERE / "static" / name).read_bytes())
+    return digest.hexdigest()[:10]
+
+
 def create_templates(settings: Settings) -> Jinja2Templates:
     templates = Jinja2Templates(directory=HERE / "templates")
+    templates.env.globals["asset_version"] = asset_version()
     templates.env.filters.update(
         money=formatting.money,
         storage=formatting.storage,

@@ -3,7 +3,7 @@
   свежей версией. В финальном статусе атрибутов hx-* нет — опрос прекращается.
 #}
 {% set rank = {"NEW": 0, "RESERVING": 1, "FRAUD_CHECK": 2, "CONFIRMED": 3}.get(order.status, 0) %}
-<section id="order-status" class="card status status--{{ order.status | status_tone }}"
+<section id="order-status" class="panel status status--{{ order.status | status_tone }}"
   {% if not order.is_final %}hx-get="/orders/{{ order.id }}/status" hx-trigger="every 1s" hx-swap="outerHTML"{% endif %}
   aria-live="polite">
   <h2>{{ order.status | status_label }}</h2>
@@ -20,7 +20,7 @@
     </ol>
   {% endif %}
   {# Сумму считает склад при резерве, поэтому она тоже часть обновляемого блока. #}
-  <p class="checkout__total">
+  <p class="summary">
     <span>Сумма</span>
     <strong>{% if order.total_kopecks %}{{ order.total_kopecks | money }}{% elif order.is_final %}—{% else %}считаем…{% endif %}</strong>
   </p>

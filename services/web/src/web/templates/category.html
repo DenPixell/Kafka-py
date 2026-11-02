@@ -1,9 +1,21 @@
 {% extends "base.html" %}
-{% from "_product_card.html" import product_card %}
 {% block title %}{{ category.name }}{% endblock %}
 {% block content %}
-<h1>{{ category.name }}</h1>
-<div class="grid">
-  {% for product in products %}{{ product_card(product) }}{% endfor %}
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Навигация">
+    <a href="/">Главная</a><span>›</span><span>{{ category.name }}</span>
+  </nav>
+  <h1 class="page-title">{{ category.name }}</h1>
+  <div class="filters" role="list">
+    <a class="pill {% if not model %}is-active{% endif %}" href="/catalog/{{ category.slug }}" role="listitem">Все</a>
+    {% for product in products %}
+      <a class="pill {% if model == product.slug %}is-active{% endif %}" href="/catalog/{{ category.slug }}?model={{ product.slug }}" role="listitem">{{ product.name }}</a>
+    {% endfor %}
+  </div>
+  <div class="rows">
+    {% for config in configurations %}
+      {% with layout = "row" %}{% include "_configurator.html" %}{% endwith %}
+    {% endfor %}
+  </div>
 </div>
 {% endblock %}

@@ -1,41 +1,12 @@
 {% extends "base.html" %}
-{% from "_icons.html" import device_icon %}
-{% block title %}{{ product.name }}{% endblock %}
+{% block title %}{{ config.product.name }}{% endblock %}
 {% block content %}
-<a class="link back" href="/catalog/{{ product.category_slug }}">← Все модели</a>
-<div class="product">
-  <div class="card product__image">{{ device_icon(product.category_slug, 200) }}</div>
-  <form class="product__buy" method="post" action="/cart/add">
-    <h1>{{ product.name }}</h1>
-    <p class="product__price">от {{ product.min_price_kopecks | money }}</p>
-
-    {% for screen in product.screens %}
-      <fieldset class="options">
-        <legend>
-          {% if product.screens | length > 1 %}Диагональ {{ screen | screen }} · {% endif %}Память
-        </legend>
-        {% for variant in product.variants_for(screen) %}
-          <label class="option {% if not variant.in_stock %}option--disabled{% endif %}">
-            <input type="radio" name="sku" value="{{ variant.sku }}" required
-                   {% if not variant.in_stock %}disabled{% endif %}
-                   {% if default and variant.sku == default.sku %}checked{% endif %}>
-            <span class="option__main">
-              <span class="option__title">{{ variant.storage_gb | storage }}</span>
-              {% if variant.note %}<span class="option__note">{{ variant.note }}</span>{% endif %}
-            </span>
-            <span class="option__price">
-              {% if variant.in_stock %}{{ variant.price_kopecks | money }}{% else %}нет в наличии{% endif %}
-            </span>
-          </label>
-        {% endfor %}
-      </fieldset>
-    {% endfor %}
-
-    {% if default %}
-      <button class="button button--primary button--wide" type="submit">Добавить в корзину</button>
-    {% else %}
-      <p class="muted">Сейчас нет ни одной конфигурации в наличии.</p>
-    {% endif %}
-  </form>
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Навигация">
+    <a href="/">Главная</a><span>›</span>
+    {% if category %}<a href="/catalog/{{ category.slug }}">{{ category.name }}</a><span>›</span>{% endif %}
+    <span>{{ config.product.name }}</span>
+  </nav>
+  {% include "_configurator.html" %}
 </div>
 {% endblock %}

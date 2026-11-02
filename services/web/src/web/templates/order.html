@@ -1,23 +1,26 @@
 {% extends "base.html" %}
 {% block title %}Заказ{% endblock %}
 {% block content %}
-<a class="link back" href="/orders">← Все заказы</a>
-<h1>Заказ от {{ order.created_at | local_time }}</h1>
-<div class="order">
-  {% include "_order_status.html" %}
-  <div class="card">
-    <h2>Состав</h2>
-    {% for item in order.items %}
-      {% set variant = variants.get(item.sku) %}
-      <div class="line line--compact">
-        <span class="line__info">
-          <strong>{{ variant.product_name if variant else item.sku }}</strong>
-          {% if variant %}<span class="muted">{{ variant.screen_inch | screen }} · {{ variant.storage_gb | storage }}{% if variant.note %} · {{ variant.note }}{% endif %}</span>{% endif %}
-        </span>
-        <span>× {{ item.quantity }}</span>
-      </div>
-    {% endfor %}
-    <p class="checkout__total"><span>Доставка</span><span>{{ order.delivery_country | country }}</span></p>
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Навигация"><a href="/orders">Заказы</a><span>›</span><span>{{ order.created_at | local_time }}</span></nav>
+  <h1 class="page-title">Заказ от {{ order.created_at | local_time }}</h1>
+  <div class="order">
+    {% include "_order_status.html" %}
+    <div class="panel">
+      <h2>Состав</h2>
+      {% for item in order.items %}
+        {% set variant = variants.get(item.sku) %}
+        <div class="line line--compact">
+          {% if variant %}<img class="line__image line__image--small" src="{{ url_for('static', path='products/' ~ variant.color.images[0]) }}" alt="" width="1000" height="1000">{% endif %}
+          <span class="line__info">
+            <strong>{{ variant.product_name if variant else item.sku }}</strong>
+            {% if variant %}<span class="muted small">{{ variant.screen_inch | screen }} · {{ variant.storage_gb | storage }} · {{ variant.color.name }}{% if variant.note %} · {{ variant.note }}{% endif %}</span>{% endif %}
+          </span>
+          <span>× {{ item.quantity }}</span>
+        </div>
+      {% endfor %}
+      <p class="summary"><span>Доставка</span><span>{{ order.delivery_country | country }}</span></p>
+    </div>
   </div>
 </div>
 {% endblock %}

@@ -32,7 +32,9 @@ def image_files() -> set[str]:
 def main() -> None:
     TARGET.mkdir(parents=True, exist_ok=True)
     missing = sorted(name for name in image_files() if not (TARGET / name).exists())
-    with httpx.Client(timeout=30, follow_redirects=True) as client:
+    # retries: CDN иногда не отвечает, повторное соединение обычно помогает.
+    transport = httpx.HTTPTransport(retries=3)
+    with httpx.Client(timeout=60, follow_redirects=True, transport=transport) as client:
         for name in missing:
             response = client.get(CDN.format(image_id=name.removesuffix(".jpg")), params=PARAMS)
             response.raise_for_status()

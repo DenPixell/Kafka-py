@@ -78,8 +78,9 @@ services:
         SERVICE: inventory
     ports:
       - "${INVENTORY_HOST_PORT:-8001}:8000"
-    environment:
+    environment: &inventory-env
       INVENTORY_DATABASE_URL: postgresql+asyncpg://${INVENTORY_DB_USER:-inventory_service}:${INVENTORY_DB_PASSWORD:-inventory_service}@postgres:5432/inventory
+      INVENTORY_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
     depends_on:
       postgres:
         condition: service_healthy
@@ -88,6 +89,20 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+
+  inventory-worker:
+    build:
+      context: .
+      args:
+        SERVICE: inventory
+    command: ["python", "-m", "inventory.worker"]
+    environment: *inventory-env
+    restart: unless-stopped
+    depends_on:
+      inventory:
+        condition: service_healthy
+      kafka-init:
+        condition: service_completed_successfully
 
   order:
     build:
@@ -108,14 +123,16 @@ services:
       timeout: 5s
       retries: 10
 
-  # Тот же образ, что у order, но другой процесс: переносит outbox в Kafka.
-  order-relay:
+  # Тот же образ, что у order, но другой процесс: читает ответы других
+  # сервисов из Kafka и переносит outbox в Kafka.
+  order-worker:
     build:
       context: .
       args:
         SERVICE: order
-    command: ["python", "-m", "order.relay"]
+    command: ["python", "-m", "order.worker"]
     environment: *order-env
+    restart: unless-stopped
     depends_on:
       order:
         condition: service_healthy  # миграции уже применены

@@ -1,44 +1,14 @@
 """Проверка репозитория и миграций на настоящем PostgreSQL в Docker."""
 
-from collections.abc import AsyncIterator, Iterator
-from pathlib import Path
-
 import pytest
-from alembic import command
-from alembic.config import Config
 from sqlalchemy import update
 from sqlalchemy.ext.asyncio import AsyncSession
-from testcontainers.community.postgres import PostgresContainer
 
 from inventory.seed.catalog import load_catalog, seed_catalog
 from inventory.storage.catalog_repository import PostgresCatalogRepository
-from inventory.storage.db import create_engine, create_session_factory
 from inventory.storage.tables import stock
 
 pytestmark = pytest.mark.integration
-
-ALEMBIC_INI = Path(__file__).parents[2] / "alembic.ini"
-
-
-@pytest.fixture(scope="module")
-def database_url() -> Iterator[str]:
-    with PostgresContainer("postgres:17.11-alpine", driver="asyncpg") as postgres:
-        url = postgres.get_connection_url()
-        config = Config(ALEMBIC_INI)
-        config.set_main_option("sqlalchemy.url", url)
-        command.upgrade(config, "head")
-        yield url
-
-
-@pytest.fixture
-async def session(database_url: str) -> AsyncIterator[AsyncSession]:
-    engine = create_engine(database_url)
-    async with create_session_factory(engine)() as session:
-        await seed_catalog(session, load_catalog())
-        yield session
-        # Откатываем всё, что сделал тест: следующий начинает с чистой базы.
-        await session.rollback()
-    await engine.dispose()
 
 
 async def test_seed_twice_does_not_duplicate(session: AsyncSession) -> None:

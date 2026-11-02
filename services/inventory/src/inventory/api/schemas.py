@@ -71,6 +71,7 @@ class ProductOut(ProductSummaryOut):
 class VariantInfoOut(VariantOut):
     product_slug: str
     product_name: str
+    category_slug: str
 
     @classmethod
     def from_info(cls, info: VariantInfo) -> "VariantInfoOut":
@@ -78,4 +79,5 @@ class VariantInfoOut(VariantOut):
             **VariantOut.from_domain(info.variant).model_dump(),
             product_slug=info.product_slug,
             product_name=info.product_name,
+            category_slug=info.category_slug,
         )

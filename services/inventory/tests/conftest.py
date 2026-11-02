@@ -26,7 +26,7 @@ class FakeCatalogRepository:
 
     async def get_variants(self, skus: list[str]) -> list[VariantInfo]:
         return [
-            VariantInfo(p.slug, p.name, v)
+            VariantInfo(p.slug, p.name, p.category_slug, v)
             for p in self._products
             for v in p.variants
             if v.sku in skus

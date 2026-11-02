@@ -40,7 +40,12 @@ class PostgresCatalogRepository:
             _products_with_variants().where(product_variants.c.sku.in_(skus))
         )
         return [
-            VariantInfo(product_slug=product.slug, product_name=product.name, variant=variant)
+            VariantInfo(
+                product_slug=product.slug,
+                product_name=product.name,
+                category_slug=product.category_slug,
+                variant=variant,
+            )
             for product in _group_into_products(result.all())
             for variant in product.variants
         ]

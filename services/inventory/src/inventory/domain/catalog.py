@@ -51,4 +51,5 @@ class VariantInfo:
 
     product_slug: str
     product_name: str
+    category_slug: str
     variant: Variant

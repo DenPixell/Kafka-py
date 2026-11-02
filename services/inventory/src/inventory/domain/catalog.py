@@ -2,7 +2,7 @@
 
 Конфигурация (Variant) — это то, что лежит на складе и что покупают:
 у неё свой артикул (SKU), цена и остаток. Модель (Product) объединяет
-конфигурации, которые отличаются только памятью и диагональю.
+конфигурации, которые отличаются памятью, диагональю и цветом.
 """
 
 from dataclasses import dataclass
@@ -16,10 +16,21 @@ class Category:
 
 
 @dataclass(frozen=True)
+class Color:
+    """Цвет корпуса модели. У каждой модели своя палитра и свои фото."""
+
+    slug: str
+    name: str
+    hex: str
+    images: tuple[str, ...]
+
+
+@dataclass(frozen=True)
 class Variant:
     sku: str
     storage_gb: int
     screen_inch: Decimal
+    color_slug: str
     price_kopecks: int
     available: int
     note: str | None = None
@@ -34,6 +45,7 @@ class Product:
     slug: str
     name: str
     category_slug: str
+    colors: tuple[Color, ...]
     variants: tuple[Variant, ...]
 
     @property
@@ -44,12 +56,16 @@ class Product:
     def in_stock(self) -> bool:
         return any(variant.in_stock for variant in self.variants)
 
+    def color(self, slug: str) -> Color:
+        return next(color for color in self.colors if color.slug == slug)
+
 
 @dataclass(frozen=True)
 class VariantInfo:
-    """Конфигурация вместе с названием модели: для корзины на витрине."""
+    """Конфигурация вместе с моделью и цветом: для корзины и заказа на витрине."""
 
     product_slug: str
     product_name: str
     category_slug: str
+    color: Color
     variant: Variant

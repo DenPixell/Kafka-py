@@ -2,7 +2,9 @@ from decimal import Decimal
 
 import pytest
 
-from inventory.domain.catalog import Category, Product, Variant, VariantInfo
+from inventory.domain.catalog import Category, Color, Product, Variant, VariantInfo
+
+BLACK = Color("black", "Чёрный", "#232325", ("black-1.jpg", "black-2.jpg"))
 
 
 class FakeCatalogRepository:
@@ -26,7 +28,7 @@ class FakeCatalogRepository:
 
     async def get_variants(self, skus: list[str]) -> list[VariantInfo]:
         return [
-            VariantInfo(p.slug, p.name, p.category_slug, v)
+            VariantInfo(p.slug, p.name, p.category_slug, p.color(v.color_slug), v)
             for p in self._products
             for v in p.variants
             if v.sku in skus
@@ -38,6 +40,7 @@ def make_variant(sku: str, price_kopecks: int, available: int = 5) -> Variant:
         sku=sku,
         storage_gb=256,
         screen_inch=Decimal("6.3"),
+        color_slug="black",
         price_kopecks=price_kopecks,
         available=available,
     )
@@ -52,6 +55,7 @@ def repository() -> FakeCatalogRepository:
                 slug="iphone-17",
                 name="iPhone 17",
                 category_slug="iphone",
+                colors=(BLACK,),
                 variants=(
                     make_variant("iphone-17-256", 7_999_000),
                     make_variant("iphone-17-512", 9_999_000, available=0),
@@ -61,6 +65,7 @@ def repository() -> FakeCatalogRepository:
                 slug="macbook-neo",
                 name="MacBook Neo",
                 category_slug="mac",
+                colors=(BLACK,),
                 variants=(make_variant("macbook-neo-256", 6_999_000, available=0),),
             ),
         ],

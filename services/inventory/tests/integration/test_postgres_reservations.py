@@ -13,8 +13,8 @@ from inventory.storage.tables import stock
 
 pytestmark = pytest.mark.integration
 
-NEO_256 = "macbook-neo-256"  # 10 штук, 69 990 ₽
-NEO_512 = "macbook-neo-512"  # 10 штук, 79 990 ₽
+NEO_256 = "macbook-neo-256-silver"  # 10 штук, 69 990 ₽
+NEO_512 = "macbook-neo-512-silver"  # 10 штук, 79 990 ₽
 
 
 async def reserved(session: AsyncSession, sku: str) -> int:
@@ -75,7 +75,7 @@ async def test_release_returns_stock_once(session: AsyncSession) -> None:
 async def test_parallel_orders_cannot_take_the_last_unit(
     session_factory: async_sessionmaker[AsyncSession],
 ) -> None:
-    last_unit = "macbook-pro-m5-max-16-8192"  # на складе одна штука
+    last_unit = "macbook-pro-m5-max-16-8192-silver"  # на складе одна штука
 
     async def place(order_id: UUID) -> ReservationResult:
         async with session_factory.begin() as session:

@@ -1,8 +1,8 @@
 """Наполнение каталога из catalog.json.
 
 В файле цены задаются как у Apple: базовая цена за диагональ плюс доплата
-за объём памяти. Из этого собираются конкретные конфигурации (SKU).
-Цены вымышленные, в рублях.
+за объём памяти, цвет на цену не влияет. Из этого собираются конкретные
+конфигурации (SKU). Цены вымышленные, в рублях.
 """
 
 from dataclasses import dataclass
@@ -14,7 +14,7 @@ from pydantic import BaseModel, Field, PositiveInt
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from inventory.storage.tables import categories, product_variants, products, stock
+from inventory.storage.tables import categories, product_colors, product_variants, products, stock
 
 DEFAULT_STOCK = 10
 
@@ -22,6 +22,14 @@ DEFAULT_STOCK = 10
 class CategorySeed(BaseModel):
     slug: str
     name: str
+
+
+class ColorSeed(BaseModel):
+    slug: str
+    name: str
+    hex: str = Field(pattern=r"^#[0-9a-f]{6}$")
+    # Файлы в static/products витрины, в порядке показа в карусели.
+    images: list[str] = Field(min_length=1)
 
 
 class ProductSeed(BaseModel):
@@ -34,6 +42,7 @@ class ProductSeed(BaseModel):
     storage: dict[PositiveInt, int] = Field(min_length=1)
     # объём памяти в ГБ → особенность конфигурации («с Touch ID»)
     notes: dict[PositiveInt, str] = {}
+    colors: list[ColorSeed] = Field(min_length=1)
     stock: int = Field(default=DEFAULT_STOCK, ge=0)
 
 
@@ -48,6 +57,7 @@ class VariantRow:
     product_slug: str
     storage_gb: int
     screen_inch: Decimal
+    color_slug: str
     price_kopecks: int
     note: str | None
     quantity: int
@@ -59,24 +69,26 @@ def load_catalog() -> CatalogSeed:
 
 
 def build_variants(product: ProductSeed) -> list[VariantRow]:
-    """Все сочетания диагонали и памяти одной модели."""
+    """Все сочетания диагонали, памяти и цвета одной модели."""
     several_screens = len(product.screens) > 1
     rows = []
     for screen, base_price in product.screens.items():
+        # Диагональ попадает в артикул, только если у модели их несколько.
+        screen_part = f"-{screen:f}".replace(".", "") if several_screens else ""
         for storage_gb, surcharge in product.storage.items():
-            # Диагональ попадает в артикул, только если у модели их несколько.
-            screen_part = f"-{screen:f}".replace(".", "") if several_screens else ""
-            rows.append(
-                VariantRow(
-                    sku=f"{product.slug}{screen_part}-{storage_gb}",
-                    product_slug=product.slug,
-                    storage_gb=storage_gb,
-                    screen_inch=screen,
-                    price_kopecks=(base_price + surcharge) * 100,
-                    note=product.notes.get(storage_gb),
-                    quantity=product.stock,
+            for color in product.colors:
+                rows.append(
+                    VariantRow(
+                        sku=f"{product.slug}{screen_part}-{storage_gb}-{color.slug}",
+                        product_slug=product.slug,
+                        storage_gb=storage_gb,
+                        screen_inch=screen,
+                        color_slug=color.slug,
+                        price_kopecks=(base_price + surcharge) * 100,
+                        note=product.notes.get(storage_gb),
+                        quantity=product.stock,
+                    )
                 )
-            )
     return rows
 
 
@@ -95,6 +107,24 @@ async def seed_catalog(session: AsyncSession, catalog: CatalogSeed) -> None:
     await session.execute(insert(categories).values(category_rows).on_conflict_do_nothing())
     await session.execute(insert(products).values(product_rows).on_conflict_do_nothing())
     await session.execute(
+        insert(product_colors)
+        .values(
+            [
+                {
+                    "product_slug": p.slug,
+                    "slug": c.slug,
+                    "name": c.name,
+                    "hex": c.hex,
+                    "position": i,
+                    "images": c.images,
+                }
+                for p in catalog.products
+                for i, c in enumerate(p.colors)
+            ]
+        )
+        .on_conflict_do_nothing()
+    )
+    await session.execute(
         insert(product_variants)
         .values(
             [
@@ -103,6 +133,7 @@ async def seed_catalog(session: AsyncSession, catalog: CatalogSeed) -> None:
                     "product_slug": v.product_slug,
                     "storage_gb": v.storage_gb,
                     "screen_inch": v.screen_inch,
+                    "color_slug": v.color_slug,
                     "price_kopecks": v.price_kopecks,
                     "note": v.note,
                 }

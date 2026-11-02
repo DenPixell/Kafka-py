@@ -24,7 +24,64 @@
       "storage": {
         "256": 0,
         "512": 20000
-      }
+      },
+      "colors": [
+        {
+          "slug": "black",
+          "name": "Чёрный",
+          "hex": "#232325",
+          "images": [
+            "iphone-17-finish-select-black-202509.jpg",
+            "iphone-17-finish-select-black-202509_AV1.jpg",
+            "iphone-17-finish-select-black-202509_AV2.jpg",
+            "iphone-17-finish-select-black-202509_AV3.jpg"
+          ]
+        },
+        {
+          "slug": "white",
+          "name": "Белый",
+          "hex": "#f4f4f1",
+          "images": [
+            "iphone-17-finish-select-white-202509.jpg",
+            "iphone-17-finish-select-white-202509_AV1.jpg",
+            "iphone-17-finish-select-white-202509_AV2.jpg",
+            "iphone-17-finish-select-white-202509_AV3.jpg"
+          ]
+        },
+        {
+          "slug": "mistblue",
+          "name": "Туманно-голубой",
+          "hex": "#9db3cc",
+          "images": [
+            "iphone-17-finish-select-mistblue-202509.jpg",
+            "iphone-17-finish-select-mistblue-202509_AV1.jpg",
+            "iphone-17-finish-select-mistblue-202509_AV2.jpg",
+            "iphone-17-finish-select-mistblue-202509_AV3.jpg"
+          ]
+        },
+        {
+          "slug": "sage",
+          "name": "Шалфей",
+          "hex": "#b3bd9f",
+          "images": [
+            "iphone-17-finish-select-sage-202509.jpg",
+            "iphone-17-finish-select-sage-202509_AV1.jpg",
+            "iphone-17-finish-select-sage-202509_AV2.jpg",
+            "iphone-17-finish-select-sage-202509_AV3.jpg"
+          ]
+        },
+        {
+          "slug": "lavender",
+          "name": "Лавандовый",
+          "hex": "#c8bddb",
+          "images": [
+            "iphone-17-finish-select-lavender-202509.jpg",
+            "iphone-17-finish-select-lavender-202509_AV1.jpg",
+            "iphone-17-finish-select-lavender-202509_AV2.jpg",
+            "iphone-17-finish-select-lavender-202509_AV3.jpg"
+          ]
+        }
+      ]
     },
     {
       "slug": "iphone-17-pro",
@@ -37,7 +94,42 @@
         "256": 0,
         "512": 20000,
         "1024": 40000
-      }
+      },
+      "colors": [
+        {
+          "slug": "cosmicorange",
+          "name": "Космический оранжевый",
+          "hex": "#e2712c",
+          "images": [
+            "iphone-17-pro-finish-select-cosmicorange-202509.jpg",
+            "iphone-17-pro-finish-select-cosmicorange-202509_AV1.jpg",
+            "iphone-17-pro-finish-select-cosmicorange-202509_AV2.jpg",
+            "iphone-17-pro-finish-select-cosmicorange-202509_AV3.jpg"
+          ]
+        },
+        {
+          "slug": "deepblue",
+          "name": "Тёмно-синий",
+          "hex": "#2e3a55",
+          "images": [
+            "iphone-17-pro-finish-select-deepblue-202509.jpg",
+            "iphone-17-pro-finish-select-deepblue-202509_AV1.jpg",
+            "iphone-17-pro-finish-select-deepblue-202509_AV2.jpg",
+            "iphone-17-pro-finish-select-deepblue-202509_AV3.jpg"
+          ]
+        },
+        {
+          "slug": "silver",
+          "name": "Серебристый",
+          "hex": "#e2e3e4",
+          "images": [
+            "iphone-17-pro-finish-select-silver-202509.jpg",
+            "iphone-17-pro-finish-select-silver-202509_AV1.jpg",
+            "iphone-17-pro-finish-select-silver-202509_AV2.jpg",
+            "iphone-17-pro-finish-select-silver-202509_AV3.jpg"
+          ]
+        }
+      ]
     },
     {
       "slug": "iphone-17-pro-max",
@@ -51,7 +143,42 @@
         "512": 20000,
         "1024": 40000,
         "2048": 80000
-      }
+      },
+      "colors": [
+        {
+          "slug": "cosmicorange",
+          "name": "Космический оранжевый",
+          "hex": "#e2712c",
+          "images": [
+            "iphone-17-pro-max-finish-select-cosmicorange-202509.jpg",
+            "iphone-17-pro-max-finish-select-cosmicorange-202509_AV1.jpg",
+            "iphone-17-pro-max-finish-select-cosmicorange-202509_AV2.jpg",
+            "iphone-17-pro-max-finish-select-cosmicorange-202509_AV3.jpg"
+          ]
+        },
+        {
+          "slug": "deepblue",
+          "name": "Тёмно-синий",
+          "hex": "#2e3a55",
+          "images": [
+            "iphone-17-pro-max-finish-select-deepblue-202509.jpg",
+            "iphone-17-pro-max-finish-select-deepblue-202509_AV1.jpg",
+            "iphone-17-pro-max-finish-select-deepblue-202509_AV2.jpg",
+            "iphone-17-pro-max-finish-select-deepblue-202509_AV3.jpg"
+          ]
+        },
+        {
+          "slug": "silver",
+          "name": "Серебристый",
+          "hex": "#e2e3e4",
+          "images": [
+            "iphone-17-pro-max-finish-select-silver-202509.jpg",
+            "iphone-17-pro-max-finish-select-silver-202509_AV1.jpg",
+            "iphone-17-pro-max-finish-select-silver-202509_AV2.jpg",
+            "iphone-17-pro-max-finish-select-silver-202509_AV3.jpg"
+          ]
+        }
+      ]
     },
     {
       "slug": "iphone-18-pro",
@@ -65,7 +192,49 @@
         "512": 20000,
         "1024": 40000,
         "2048": 80000
-      }
+      },
+      "colors": [
+        {
+          "slug": "black",
+          "name": "Чёрный",
+          "hex": "#232325",
+          "images": [
+            "iphone-18-pro-finish-select-black-202609.jpg",
+            "iphone-18-pro-finish-select-black-202609_AV2.jpg",
+            "iphone-18-pro-finish-select-black-202609_AV3.jpg"
+          ]
+        },
+        {
+          "slug": "silver",
+          "name": "Серебристый",
+          "hex": "#e2e3e4",
+          "images": [
+            "iphone-18-pro-finish-select-silver-202609.jpg",
+            "iphone-18-pro-finish-select-silver-202609_AV2.jpg",
+            "iphone-18-pro-finish-select-silver-202609_AV3.jpg"
+          ]
+        },
+        {
+          "slug": "glacier",
+          "name": "Ледниковый",
+          "hex": "#c4d8e2",
+          "images": [
+            "iphone-18-pro-finish-select-glacier-202609.jpg",
+            "iphone-18-pro-finish-select-glacier-202609_AV2.jpg",
+            "iphone-18-pro-finish-select-glacier-202609_AV3.jpg"
+          ]
+        },
+        {
+          "slug": "burgundy",
+          "name": "Бордовый",
+          "hex": "#6a2132",
+          "images": [
+            "iphone-18-pro-finish-select-burgundy-202609.jpg",
+            "iphone-18-pro-finish-select-burgundy-202609_AV2.jpg",
+            "iphone-18-pro-finish-select-burgundy-202609_AV3.jpg"
+          ]
+        }
+      ]
     },
     {
       "slug": "iphone-18-pro-max",
@@ -80,7 +249,49 @@
         "1024": 40000,
         "2048": 80000
       },
-      "stock": 2
+      "stock": 2,
+      "colors": [
+        {
+          "slug": "black",
+          "name": "Чёрный",
+          "hex": "#232325",
+          "images": [
+            "iphone-18-pro-max-finish-select-black-202609.jpg",
+            "iphone-18-pro-max-finish-select-black-202609_AV2.jpg",
+            "iphone-18-pro-max-finish-select-black-202609_AV3.jpg"
+          ]
+        },
+        {
+          "slug": "silver",
+          "name": "Серебристый",
+          "hex": "#e2e3e4",
+          "images": [
+            "iphone-18-pro-max-finish-select-silver-202609.jpg",
+            "iphone-18-pro-max-finish-select-silver-202609_AV2.jpg",
+            "iphone-18-pro-max-finish-select-silver-202609_AV3.jpg"
+          ]
+        },
+        {
+          "slug": "glacier",
+          "name": "Ледниковый",
+          "hex": "#c4d8e2",
+          "images": [
+            "iphone-18-pro-max-finish-select-glacier-202609.jpg",
+            "iphone-18-pro-max-finish-select-glacier-202609_AV2.jpg",
+            "iphone-18-pro-max-finish-select-glacier-202609_AV3.jpg"
+          ]
+        },
+        {
+          "slug": "burgundy",
+          "name": "Бордовый",
+          "hex": "#6a2132",
+          "images": [
+            "iphone-18-pro-max-finish-select-burgundy-202609.jpg",
+            "iphone-18-pro-max-finish-select-burgundy-202609_AV2.jpg",
+            "iphone-18-pro-max-finish-select-burgundy-202609_AV3.jpg"
+          ]
+        }
+      ]
     },
     {
       "slug": "ipad-10",
@@ -92,7 +303,45 @@
       "storage": {
         "64": 0,
         "256": 15000
-      }
+      },
+      "colors": [
+        {
+          "slug": "silver",
+          "name": "Серебристый",
+          "hex": "#e2e3e4",
+          "images": [
+            "ipad-10th-gen-finish-silver-2022.jpg",
+            "ipad-2022-hero-silver-wifi-select.jpg"
+          ]
+        },
+        {
+          "slug": "blue",
+          "name": "Голубой",
+          "hex": "#a7c4e1",
+          "images": [
+            "ipad-10th-gen-finish-blue-2022.jpg",
+            "ipad-2022-hero-blue-wifi-select.jpg"
+          ]
+        },
+        {
+          "slug": "pink",
+          "name": "Розовый",
+          "hex": "#f1c8cb",
+          "images": [
+            "ipad-10th-gen-finish-pink-2022.jpg",
+            "ipad-2022-hero-pink-wifi-select.jpg"
+          ]
+        },
+        {
+          "slug": "yellow",
+          "name": "Жёлтый",
+          "hex": "#f1dd8c",
+          "images": [
+            "ipad-10th-gen-finish-yellow-2022.jpg",
+            "ipad-2022-hero-yellow-wifi-select.jpg"
+          ]
+        }
+      ]
     },
     {
       "slug": "ipad-a16",
@@ -105,7 +354,53 @@
         "128": 0,
         "256": 10000,
         "512": 30000
-      }
+      },
+      "colors": [
+        {
+          "slug": "silver",
+          "name": "Серебристый",
+          "hex": "#e2e3e4",
+          "images": [
+            "ipad-2022-hero-silver-wifi-select.jpg",
+            "ipad-model-unselect-gallery-1-202503.jpg",
+            "ipad-model-unselect-gallery-2-202503.jpg",
+            "ipad-model-unselect-gallery-3-202503.jpg"
+          ]
+        },
+        {
+          "slug": "blue",
+          "name": "Голубой",
+          "hex": "#a7c4e1",
+          "images": [
+            "ipad-2022-hero-blue-wifi-select.jpg",
+            "ipad-model-unselect-gallery-1-202503.jpg",
+            "ipad-model-unselect-gallery-2-202503.jpg",
+            "ipad-model-unselect-gallery-3-202503.jpg"
+          ]
+        },
+        {
+          "slug": "pink",
+          "name": "Розовый",
+          "hex": "#f1c8cb",
+          "images": [
+            "ipad-2022-hero-pink-wifi-select.jpg",
+            "ipad-model-unselect-gallery-1-202503.jpg",
+            "ipad-model-unselect-gallery-2-202503.jpg",
+            "ipad-model-unselect-gallery-3-202503.jpg"
+          ]
+        },
+        {
+          "slug": "yellow",
+          "name": "Жёлтый",
+          "hex": "#f1dd8c",
+          "images": [
+            "ipad-2022-hero-yellow-wifi-select.jpg",
+            "ipad-model-unselect-gallery-1-202503.jpg",
+            "ipad-model-unselect-gallery-2-202503.jpg",
+            "ipad-model-unselect-gallery-3-202503.jpg"
+          ]
+        }
+      ]
     },
     {
       "slug": "ipad-pro-m4",
@@ -120,7 +415,33 @@
         "512": 20000,
         "1024": 60000,
         "2048": 100000
-      }
+      },
+      "colors": [
+        {
+          "slug": "spaceblack",
+          "name": "Чёрный космос",
+          "hex": "#2d2d2f",
+          "images": [
+            "ipad-pro-finish-select-202405-13inch-spaceblack.jpg",
+            "ipad-pro-finish-select-202405-13inch-spaceblack_AV1.jpg",
+            "ipad-pro-finish-select-202405-13inch-spaceblack_AV2.jpg",
+            "ipad-pro-finish-select-202405-11inch-spaceblack.jpg",
+            "ipad-pro-finish-select-202405-11inch-spaceblack_AV1.jpg"
+          ]
+        },
+        {
+          "slug": "silver",
+          "name": "Серебристый",
+          "hex": "#e2e3e4",
+          "images": [
+            "ipad-pro-finish-select-202405-13inch-silver.jpg",
+            "ipad-pro-finish-select-202405-13inch-silver_AV1.jpg",
+            "ipad-pro-finish-select-202405-13inch-silver_AV2.jpg",
+            "ipad-pro-finish-select-202405-11inch-silver.jpg",
+            "ipad-pro-finish-select-202405-11inch-silver_AV1.jpg"
+          ]
+        }
+      ]
     },
     {
       "slug": "ipad-pro-m5",
@@ -135,7 +456,33 @@
         "512": 20000,
         "1024": 60000,
         "2048": 100000
-      }
+      },
+      "colors": [
+        {
+          "slug": "spaceblack",
+          "name": "Чёрный космос",
+          "hex": "#2d2d2f",
+          "images": [
+            "ipad-pro-finish-select-202405-13inch-spaceblack.jpg",
+            "ipad-pro-finish-select-202405-13inch-spaceblack_AV1.jpg",
+            "ipad-pro-finish-select-202405-13inch-spaceblack_AV2.jpg",
+            "ipad-pro-finish-select-202405-11inch-spaceblack.jpg",
+            "ipad-pro-finish-select-202405-11inch-spaceblack_AV1.jpg"
+          ]
+        },
+        {
+          "slug": "silver",
+          "name": "Серебристый",
+          "hex": "#e2e3e4",
+          "images": [
+            "ipad-pro-finish-select-202405-13inch-silver.jpg",
+            "ipad-pro-finish-select-202405-13inch-silver_AV1.jpg",
+            "ipad-pro-finish-select-202405-13inch-silver_AV2.jpg",
+            "ipad-pro-finish-select-202405-11inch-silver.jpg",
+            "ipad-pro-finish-select-202405-11inch-silver_AV1.jpg"
+          ]
+        }
+      ]
     },
     {
       "slug": "macbook-neo",
@@ -150,7 +497,49 @@
       },
       "notes": {
         "512": "с Touch ID"
-      }
+      },
+      "colors": [
+        {
+          "slug": "silver",
+          "name": "Серебристый",
+          "hex": "#e2e3e4",
+          "images": [
+            "macbook-neo-silver-cto-hero-202603.jpg",
+            "macbook-neo-color-unselect-202603-gallery-1.jpg",
+            "macbook-neo-color-unselect-202603-gallery-2.jpg"
+          ]
+        },
+        {
+          "slug": "blush",
+          "name": "Румяный",
+          "hex": "#efc8bf",
+          "images": [
+            "macbook-neo-blush-cto-hero-202603.jpg",
+            "macbook-neo-color-unselect-202603-gallery-1.jpg",
+            "macbook-neo-color-unselect-202603-gallery-2.jpg"
+          ]
+        },
+        {
+          "slug": "citrus",
+          "name": "Цитрус",
+          "hex": "#e5df88",
+          "images": [
+            "macbook-neo-citrus-cto-hero-202603.jpg",
+            "macbook-neo-color-unselect-202603-gallery-1.jpg",
+            "macbook-neo-color-unselect-202603-gallery-2.jpg"
+          ]
+        },
+        {
+          "slug": "indigo",
+          "name": "Индиго",
+          "hex": "#3e4989",
+          "images": [
+            "macbook-neo-indigo-cto-hero-202603.jpg",
+            "macbook-neo-color-unselect-202603-gallery-1.jpg",
+            "macbook-neo-color-unselect-202603-gallery-2.jpg"
+          ]
+        }
+      ]
     },
     {
       "slug": "macbook-air-m5",
@@ -165,7 +554,57 @@
         "1024": 20000,
         "2048": 60000,
         "4096": 120000
-      }
+      },
+      "colors": [
+        {
+          "slug": "skyblue",
+          "name": "Небесно-голубой",
+          "hex": "#bdd2df",
+          "images": [
+            "mba13-skyblue-select-202503.jpg",
+            "mba15-skyblue-select-202503.jpg",
+            "mba13-skyblue-cto-hero-202503.jpg",
+            "macbook-air-size-unselect-202601-gallery-1.jpg",
+            "macbook-air-size-unselect-202601-gallery-2.jpg"
+          ]
+        },
+        {
+          "slug": "silver",
+          "name": "Серебристый",
+          "hex": "#e2e3e4",
+          "images": [
+            "mba13-silver-select-202503.jpg",
+            "mba15-silver-select-202503.jpg",
+            "mba13-silver-cto-hero-202503.jpg",
+            "macbook-air-size-unselect-202601-gallery-1.jpg",
+            "macbook-air-size-unselect-202601-gallery-2.jpg"
+          ]
+        },
+        {
+          "slug": "starlight",
+          "name": "Сияющая звезда",
+          "hex": "#e7dfd0",
+          "images": [
+            "mba13-starlight-select-202503.jpg",
+            "mba15-starlight-select-202503.jpg",
+            "mba13-starlight-cto-hero-202503.jpg",
+            "macbook-air-size-unselect-202601-gallery-1.jpg",
+            "macbook-air-size-unselect-202601-gallery-2.jpg"
+          ]
+        },
+        {
+          "slug": "midnight",
+          "name": "Тёмная ночь",
+          "hex": "#2d3541",
+          "images": [
+            "mba13-midnight-select-202503.jpg",
+            "mba15-midnight-select-202503.jpg",
+            "mba13-midnight-cto-hero-202503.jpg",
+            "macbook-air-size-unselect-202601-gallery-1.jpg",
+            "macbook-air-size-unselect-202601-gallery-2.jpg"
+          ]
+        }
+      ]
     },
     {
       "slug": "macbook-pro-m5",
@@ -177,7 +616,33 @@
       "storage": {
         "512": 0,
         "1024": 20000
-      }
+      },
+      "colors": [
+        {
+          "slug": "spaceblack",
+          "name": "Чёрный космос",
+          "hex": "#2d2d2f",
+          "images": [
+            "mbp14-spaceblack-select-202410.jpg",
+            "mbp16-spaceblack-select-202410.jpg",
+            "mbp14-spaceblack-gallery1-202410.jpg",
+            "mbp14-spaceblack-cto-hero-202410.jpg",
+            "mac-macbook-pro-size-unselect-202610-gallery-1.jpg"
+          ]
+        },
+        {
+          "slug": "silver",
+          "name": "Серебристый",
+          "hex": "#e2e3e4",
+          "images": [
+            "mbp14-silver-select-202410.jpg",
+            "mbp16-silver-select-202410.jpg",
+            "mbp14-silver-gallery1-202410.jpg",
+            "mbp14-silver-cto-hero-202410.jpg",
+            "mac-macbook-pro-size-unselect-202610-gallery-1.jpg"
+          ]
+        }
+      ]
     },
     {
       "slug": "macbook-pro-m5-pro",
@@ -191,7 +656,33 @@
         "1024": 0,
         "2048": 40000,
         "4096": 100000
-      }
+      },
+      "colors": [
+        {
+          "slug": "spaceblack",
+          "name": "Чёрный космос",
+          "hex": "#2d2d2f",
+          "images": [
+            "mbp14-spaceblack-select-202410.jpg",
+            "mbp16-spaceblack-select-202410.jpg",
+            "mbp14-spaceblack-gallery1-202410.jpg",
+            "mbp14-spaceblack-cto-hero-202410.jpg",
+            "mac-macbook-pro-size-unselect-202610-gallery-1.jpg"
+          ]
+        },
+        {
+          "slug": "silver",
+          "name": "Серебристый",
+          "hex": "#e2e3e4",
+          "images": [
+            "mbp14-silver-select-202410.jpg",
+            "mbp16-silver-select-202410.jpg",
+            "mbp14-silver-gallery1-202410.jpg",
+            "mbp14-silver-cto-hero-202410.jpg",
+            "mac-macbook-pro-size-unselect-202610-gallery-1.jpg"
+          ]
+        }
+      ]
     },
     {
       "slug": "macbook-pro-m5-max",
@@ -206,7 +697,33 @@
         "4096": 60000,
         "8192": 180000
       },
-      "stock": 1
+      "stock": 1,
+      "colors": [
+        {
+          "slug": "spaceblack",
+          "name": "Чёрный космос",
+          "hex": "#2d2d2f",
+          "images": [
+            "mbp14-spaceblack-select-202410.jpg",
+            "mbp16-spaceblack-select-202410.jpg",
+            "mbp14-spaceblack-gallery1-202410.jpg",
+            "mbp14-spaceblack-cto-hero-202410.jpg",
+            "mac-macbook-pro-size-unselect-202610-gallery-1.jpg"
+          ]
+        },
+        {
+          "slug": "silver",
+          "name": "Серебристый",
+          "hex": "#e2e3e4",
+          "images": [
+            "mbp14-silver-select-202410.jpg",
+            "mbp16-silver-select-202410.jpg",
+            "mbp14-silver-gallery1-202410.jpg",
+            "mbp14-silver-cto-hero-202410.jpg",
+            "mac-macbook-pro-size-unselect-202610-gallery-1.jpg"
+          ]
+        }
+      ]
     }
   ]
 }

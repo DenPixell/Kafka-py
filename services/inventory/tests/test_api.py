@@ -29,13 +29,16 @@ async def test_products_by_category(client: httpx.AsyncClient) -> None:
     response = await client.get("/products", params={"category": "iphone"})
 
     assert response.status_code == 200
-    assert response.json() == [
+    [product] = response.json()
+    assert product["slug"] == "iphone-17"
+    assert product["min_price_kopecks"] == 7_999_000
+    assert product["in_stock"] is True
+    assert product["colors"] == [
         {
-            "slug": "iphone-17",
-            "name": "iPhone 17",
-            "category_slug": "iphone",
-            "min_price_kopecks": 7_999_000,
-            "in_stock": True,
+            "slug": "black",
+            "name": "Чёрный",
+            "hex": "#232325",
+            "images": ["black-1.jpg", "black-2.jpg"],
         }
     ]
 
@@ -62,9 +65,9 @@ async def test_variants_by_sku_skip_unknown(client: httpx.AsyncClient) -> None:
     )
 
     assert response.status_code == 200
-    assert [(v["sku"], v["product_name"]) for v in response.json()] == [
-        ("iphone-17-512", "iPhone 17"),
-        ("macbook-neo-256", "MacBook Neo"),
+    assert [(v["sku"], v["product_name"], v["color"]["name"]) for v in response.json()] == [
+        ("iphone-17-512", "iPhone 17", "Чёрный"),
+        ("macbook-neo-256", "MacBook Neo", "Чёрный"),
     ]
 
 

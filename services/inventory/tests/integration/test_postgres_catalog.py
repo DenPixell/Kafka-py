@@ -24,22 +24,24 @@ async def test_product_variants_are_sorted_by_screen_then_storage(session: Async
     product = await PostgresCatalogRepository(session).get_product("ipad-pro-m5")
 
     assert product is not None
-    assert [v.sku for v in product.variants][:3] == [
-        "ipad-pro-m5-11-256",
-        "ipad-pro-m5-11-512",
-        "ipad-pro-m5-11-1024",
+    assert [v.sku for v in product.variants][:4] == [
+        "ipad-pro-m5-11-256-silver",
+        "ipad-pro-m5-11-256-spaceblack",
+        "ipad-pro-m5-11-512-silver",
+        "ipad-pro-m5-11-512-spaceblack",
     ]
+    assert [c.slug for c in product.colors] == ["spaceblack", "silver"]
 
 
 async def test_available_is_quantity_minus_reserved(session: AsyncSession) -> None:
     await session.execute(
-        update(stock).where(stock.c.sku == "macbook-neo-512").values(quantity=3, reserved=2)
+        update(stock).where(stock.c.sku == "macbook-neo-512-silver").values(quantity=3, reserved=2)
     )
 
     product = await PostgresCatalogRepository(session).get_product("macbook-neo")
 
     assert product is not None
-    assert {v.sku: v.available for v in product.variants}["macbook-neo-512"] == 1
+    assert {v.sku: v.available for v in product.variants}["macbook-neo-512-silver"] == 1
 
 
 async def test_category_filter_and_existence(session: AsyncSession) -> None:
@@ -54,10 +56,10 @@ async def test_category_filter_and_existence(session: AsyncSession) -> None:
 
 async def test_variants_by_sku(session: AsyncSession) -> None:
     found = await PostgresCatalogRepository(session).get_variants(
-        ["macbook-neo-512", "ipad-pro-m5-13-256", "nope"]
+        ["macbook-neo-512-citrus", "ipad-pro-m5-13-256-spaceblack", "nope"]
     )
 
-    assert {(v.product_name, v.variant.sku, v.variant.note) for v in found} == {
-        ("MacBook Neo", "macbook-neo-512", "с Touch ID"),
-        ("iPad Pro (M5)", "ipad-pro-m5-13-256", None),
+    assert {(v.product_name, v.variant.sku, v.variant.note, v.color.name) for v in found} == {
+        ("MacBook Neo", "macbook-neo-512-citrus", "с Touch ID", "Цитрус"),
+        ("iPad Pro (M5)", "ipad-pro-m5-13-256-spaceblack", None, "Чёрный космос"),
     }

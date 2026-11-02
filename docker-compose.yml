@@ -74,7 +74,8 @@ services:
   inventory:
     build:
       context: .
-      dockerfile: services/inventory/Dockerfile
+      args:
+        SERVICE: inventory
     ports:
       - "${INVENTORY_HOST_PORT:-8001}:8000"
     environment:
@@ -87,6 +88,39 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+
+  order:
+    build:
+      context: .
+      args:
+        SERVICE: order
+    ports:
+      - "${ORDER_HOST_PORT:-8002}:8000"
+    environment: &order-env
+      ORDER_DATABASE_URL: postgresql+asyncpg://${ORDER_DB_USER:-order_service}:${ORDER_DB_PASSWORD:-order_service}@postgres:5432/orders
+      ORDER_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Тот же образ, что у order, но другой процесс: переносит outbox в Kafka.
+  order-relay:
+    build:
+      context: .
+      args:
+        SERVICE: order
+    command: ["python", "-m", "order.relay"]
+    environment: *order-env
+    depends_on:
+      order:
+        condition: service_healthy  # миграции уже применены
+      kafka-init:
+        condition: service_completed_successfully  # топики уже созданы
 
   kafka-ui:
     image: ghcr.io/kafbat/kafka-ui:v1.4.2

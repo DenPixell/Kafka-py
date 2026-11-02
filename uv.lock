@@ -97,6 +97,24 @@ wheels = [
 name = "antifraud"
 version = "0.1.0"
 source = { editable = "services/antifraud" }
+dependencies = [
+    { name = "alembic" },
+    { name = "asyncpg" },
+    { name = "contracts" },
+    { name = "messaging" },
+    { name = "pydantic-settings" },
+    { name = "sqlalchemy", extra = ["asyncio"] },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "alembic", specifier = ">=1.20.1" },
+    { name = "asyncpg", specifier = ">=0.32.0" },
+    { name = "contracts", editable = "libs/contracts" },
+    { name = "messaging", editable = "libs/messaging" },
+    { name = "pydantic-settings", specifier = ">=2.16.2" },
+    { name = "sqlalchemy", extras = ["asyncio"], specifier = ">=2.1.6" },
+]
 
 [[package]]
 name = "anyio"

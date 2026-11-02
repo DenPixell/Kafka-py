@@ -3,8 +3,19 @@ name = "antifraud"
 version = "0.1.0"
 description = "Проверка заказов по антифрод-правилам"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "alembic>=1.20.1",
+    "asyncpg>=0.32.0",
+    "contracts",
+    "messaging",
+    "pydantic-settings>=2.16.2",
+    "sqlalchemy[asyncio]>=2.1.6",
+]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.uv.sources]
+contracts = { workspace = true }
+messaging = { workspace = true }

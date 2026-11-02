@@ -2,9 +2,13 @@ from typing import Protocol
 
 from aiokafka import AIOKafkaProducer
 
+Headers = list[tuple[str, bytes]]
+
 
 class Publisher(Protocol):
-    async def publish(self, topic: str, key: str, value: bytes) -> None: ...
+    async def publish(
+        self, topic: str, key: str, value: bytes, headers: Headers | None = None
+    ) -> None: ...
 
 
 class KafkaPublisher:
@@ -27,5 +31,7 @@ class KafkaPublisher:
     async def stop(self) -> None:
         await self._producer.stop()
 
-    async def publish(self, topic: str, key: str, value: bytes) -> None:
-        await self._producer.send_and_wait(topic, value=value, key=key.encode())
+    async def publish(
+        self, topic: str, key: str, value: bytes, headers: Headers | None = None
+    ) -> None:
+        await self._producer.send_and_wait(topic, value=value, key=key.encode(), headers=headers)
